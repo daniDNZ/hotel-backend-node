@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Maxi Rainforth",
+    "job": "Manager",
+    "email": "mrainforth0@theguardian.com",
+    "phone": "+1-113-365-5552",
+    "startDate": "05/30/2022",
+    "functions": "cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis",
+    "state": "active",
+    "password": "m0sah4TV"
+  },
+  {
+    "id": 2,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Stanislas Olczak",
+    "job": "Servicio de Habitaciones",
+    "email": "solczak1@jugem.jp",
+    "phone": "+351-281-671-5854",
+    "startDate": "08/26/2021",
+    "functions": "ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent",
+    "state": "active",
+    "password": "hMrARTnpJ"
+  },
+  {
+    "id": 3,
+    "photo": "http://dummyimage.com/x.png/cc0000/ffffff",
+    "fullName": "Romy Townrow",
+    "job": "Servicio de Habitaciones",
+    "email": "rtownrow2@google.ca",
+    "phone": "+86-343-400-6357",
+    "startDate": "08/13/2021",
+    "functions": "eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante",
+    "state": "active",
+    "password": "WkzV7P"
+  },
+  {
+    "id": 4,
+    "photo": "http://dummyimage.com/x.png/cc0000/ffffff",
+    "fullName": "Merilyn Falla",
+    "job": "Recepción",
+    "email": "mfalla3@fotki.com",
+    "phone": "+62-956-561-5491",
+    "startDate": "11/11/2021",
+    "functions": "felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices",
+    "state": "inactive",
+    "password": "VRjnmB5zDY"
+  },
+  {
+    "id": 5,
+    "photo": "http://dummyimage.com/x.png/ff4444/ffffff",
+    "fullName": "Devlen Boller",
+    "job": "Servicio de Habitaciones",
+    "email": "dboller4@senate.gov",
+    "phone": "+46-134-485-8940",
+    "startDate": "12/15/2021",
+    "functions": "tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed",
+    "state": "active",
+    "password": "707m4im9wuUz"
+  },
+  {
+    "id": 6,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Gaspard Adelberg",
+    "job": "Manager",
+    "email": "gadelberg5@hud.gov",
+    "phone": "+420-648-259-6303",
+    "startDate": "03/03/2022",
+    "functions": "leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer",
+    "state": "active",
+    "password": "5cqCz7rW"
+  },
+  {
+    "id": 7,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Townie Durnford",
+    "job": "Manager",
+    "email": "tdurnford6@spiegel.de",
+    "phone": "+56-939-357-5597",
+    "startDate": "08/05/2022",
+    "functions": "vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante",
+    "state": "inactive",
+    "password": "I9KiK5"
+  },
+  {
+    "id": 8,
+    "photo": "http://dummyimage.com/x.png/cc0000/ffffff",
+    "fullName": "Genia Nix",
+    "job": "Manager",
+    "email": "gnix7@arizona.edu",
+    "phone": "+66-759-818-3539",
+    "startDate": "08/13/2021",
+    "functions": "curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla",
+    "state": "active",
+    "password": "qYqvFB"
+  },
+  {
+    "id": 9,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Drusilla Quemby",
+    "job": "Servicio de Habitaciones",
+    "email": "dquemby8@ebay.co.uk",
+    "phone": "+86-631-812-5647",
+    "startDate": "10/30/2021",
+    "functions": "purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in",
+    "state": "active",
+    "password": "nmlX0CCQ2"
+  },
+  {
+    "id": 10,
+    "photo": "http://dummyimage.com/x.png/dddddd/000000",
+    "fullName": "Georgi Dorre",
+    "job": "Servicio de Habitaciones",
+    "email": "gdorre9@webs.com",
+    "phone": "+387-737-746-9492",
+    "startDate": "08/14/2021",
+    "functions": "sapien a libero nam dui proin leo odio porttitor id consequat in consequat",
+    "state": "inactive",
+    "password": "5srtUQUu9trl"
+  }
+]

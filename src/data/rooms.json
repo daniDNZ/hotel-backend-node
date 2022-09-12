@@ -1,0 +1,298 @@
+[
+  {
+    "id": 1,
+    "type": "Corvette",
+    "number": 22,
+    "price": "128,25",
+    "amenities": [
+      "3 Bed Space"
+    ],
+    "photos": "http://dummyimage.com/x.png/cc0000/ffffff",
+    "description": "est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium",
+    "offer": true,
+    "discount": 32,
+    "cancellation": "nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue"
+  },
+  {
+    "id": 2,
+    "type": "CL-Class",
+    "number": 23,
+    "price": "180,26",
+    "amenities": [
+      "3 Bed Space"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod",
+    "offer": true,
+    "discount": 28,
+    "cancellation": "vel sem sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate"
+  },
+  {
+    "id": 3,
+    "type": "GTO",
+    "number": 77,
+    "price": "95,36",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/ff4444/ffffff",
+    "description": "morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas",
+    "offer": false,
+    "discount": 6,
+    "cancellation": "eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at"
+  },
+  {
+    "id": 4,
+    "type": "Canyon",
+    "number": 68,
+    "price": "112,18",
+    "amenities": [
+      "3 Bed Space"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus",
+    "offer": false,
+    "discount": 6,
+    "cancellation": "habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy"
+  },
+  {
+    "id": 5,
+    "type": "Edge",
+    "number": 8,
+    "price": "135,40",
+    "amenities": [
+      "24 Hours Guard"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis eget elit",
+    "offer": true,
+    "discount": 20,
+    "cancellation": "erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer"
+  },
+  {
+    "id": 6,
+    "type": "Elantra",
+    "number": 50,
+    "price": "83,07",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "mi integer ac neque duis bibendum morbi non quam nec dui luctus rutrum nulla tellus in sagittis dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non",
+    "offer": false,
+    "discount": 47,
+    "cancellation": "in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede"
+  },
+  {
+    "id": 7,
+    "type": "Vandura 1500",
+    "number": 22,
+    "price": "60,97",
+    "amenities": [
+      "24 Hours Guard"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere",
+    "offer": true,
+    "discount": 21,
+    "cancellation": "sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate"
+  },
+  {
+    "id": 8,
+    "type": "62",
+    "number": 34,
+    "price": "240,99",
+    "amenities": [
+      "Air Conditioner"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing",
+    "offer": false,
+    "discount": 19,
+    "cancellation": "quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at nibh"
+  },
+  {
+    "id": 9,
+    "type": "MDX",
+    "number": 53,
+    "price": "92,92",
+    "amenities": [
+      "Air Conditioner"
+    ],
+    "photos": "http://dummyimage.com/x.png/ff4444/ffffff",
+    "description": "malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor",
+    "offer": true,
+    "discount": 36,
+    "cancellation": "tellus nisi eu orci mauris lacinia sapien quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo"
+  },
+  {
+    "id": 10,
+    "type": "Suite",
+    "number": 79,
+    "price": "194,81",
+    "amenities": [
+      "2 Bathroom",
+      "TV",
+      "Wi-Fi"
+    ],
+    "photos": "http://dummyimage.com/x.png/ff4444/ffffff",
+    "description": "praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget tempus vel pede",
+    "offer": true,
+    "discount": 21,
+    "cancellation": "sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo"
+  },
+  {
+    "id": 11,
+    "type": "Spyder",
+    "number": 64,
+    "price": "190,48",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices",
+    "offer": false,
+    "discount": 16,
+    "cancellation": "aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est quam pharetra magna"
+  },
+  {
+    "id": 12,
+    "type": "LeBaron",
+    "number": 51,
+    "price": "82,47",
+    "amenities": [
+      "Free Wifi"
+    ],
+    "photos": "http://dummyimage.com/x.png/dddddd/000000",
+    "description": "luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend",
+    "offer": true,
+    "discount": 1,
+    "cancellation": "phasellus in felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio"
+  },
+  {
+    "id": 13,
+    "type": "Insight",
+    "number": 38,
+    "price": "186,48",
+    "amenities": [
+      "2 Bathroom"
+    ],
+    "photos": "http://dummyimage.com/x.png/cc0000/ffffff",
+    "description": "sagittis dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in",
+    "offer": false,
+    "discount": 21,
+    "cancellation": "tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in"
+  },
+  {
+    "id": 14,
+    "type": "Cobalt SS",
+    "number": 49,
+    "price": "166,51",
+    "amenities": [
+      "Air Conditioner"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "nisl aenean lectus pellentesque eget nunc donec quis orci eget orci vehicula condimentum curabitur in libero ut massa volutpat convallis morbi odio odio",
+    "offer": false,
+    "discount": 10,
+    "cancellation": "at nunc commodo placerat praesent blandit nam nulla integer pede justo"
+  },
+  {
+    "id": 15,
+    "type": "V50",
+    "number": 63,
+    "price": "226,82",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/dddddd/000000",
+    "description": "neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras",
+    "offer": false,
+    "discount": 42,
+    "cancellation": "vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est"
+  },
+  {
+    "id": 16,
+    "type": "4Runner",
+    "number": 75,
+    "price": "58,07",
+    "amenities": [
+      "Air Conditioner"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "morbi odio odio elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis",
+    "offer": false,
+    "discount": 17,
+    "cancellation": "odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam"
+  },
+  {
+    "id": 17,
+    "type": "Outlander",
+    "number": 31,
+    "price": "81,02",
+    "amenities": [
+      "24 Hours Guard"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit",
+    "offer": false,
+    "discount": 18,
+    "cancellation": "amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices"
+  },
+  {
+    "id": 18,
+    "type": "Truck Xtracab SR5",
+    "number": 4,
+    "price": "104,18",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "sit amet consectetuer adipiscing elit proin risus praesent lectus vestibulum quam sapien varius ut blandit non interdum in ante",
+    "offer": true,
+    "discount": 44,
+    "cancellation": "tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et"
+  },
+  {
+    "id": 19,
+    "type": "Astro",
+    "number": 42,
+    "price": "121,03",
+    "amenities": [
+      "2 Bathroom"
+    ],
+    "photos": "http://dummyimage.com/x.png/dddddd/000000",
+    "description": "mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at",
+    "offer": true,
+    "discount": 9,
+    "cancellation": "sem fusce consequat nulla nisl nunc nisl duis bibendum felis sed interdum"
+  },
+  {
+    "id": 20,
+    "type": "S-Class",
+    "number": 8,
+    "price": "200,57",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "quisque ut erat curabitur gravida nisi at nibh in hac habitasse platea dictumst",
+    "offer": true,
+    "discount": 24,
+    "cancellation": "purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at diam nam tristique"
+  },
+  {
+    "id": 21,
+    "type": "S-Class",
+    "number": 33,
+    "price": "200,57",
+    "amenities": [
+      "Television"
+    ],
+    "photos": "http://dummyimage.com/x.png/5fa2dd/ffffff",
+    "description": "quisque ut erat curabitur gravida nisi at nibh in hac habitasse platea dictumst",
+    "offer": true,
+    "discount": 24,
+    "cancellation": "purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at diam nam tristique"
+  }
+]
