@@ -22,7 +22,7 @@ app.use('/users', usersRouter);
 app.use('/messages', messagesRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req: Request, res: Response, next) {
+app.use(function (req: Request, res: Response, next: NextFunction) {
   next(createError(404));
 });
 
