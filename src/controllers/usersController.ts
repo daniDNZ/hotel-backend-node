@@ -1,16 +1,16 @@
 import { delay } from '../assets/functions';
-import IBooking from '../interfaces/IBooking';
+import IUser from '../interfaces/IUser';
 import { Request, Response, NextFunction } from 'express';
-import bookingsDataJSON from '../data/bookings.json';
+import usersDataJSON from '../data/users.json';
 
-const bookingsData: any = bookingsDataJSON;
+const usersData: any = usersDataJSON;
 
-const bookingsController = {
+const usersController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const bookings: IBooking[] = await delay(bookingsData, 500);
-      return bookings
-        ? res.json(bookings)
+      const users: IUser[] = await delay(usersData, 500);
+      return users
+        ? res.json(users)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
@@ -19,12 +19,12 @@ const bookingsController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const booking: IBooking = await delay(
-        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
+      const user: IUser = await delay(
+        usersData.find((r: IUser) => r.id === Number(req.params.id)),
         500);
 
-      return booking
-        ? res.json(booking)
+      return user
+        ? res.json(user)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
@@ -45,14 +45,14 @@ const bookingsController = {
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = req.body
-      const booking: IBooking = await delay(
-        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
+      const user: IUser = await delay(
+        usersData.find((r: IUser) => r.id === Number(req.params.id)),
         500);
 
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ status: res.statusCode, message: 'No body' })
       }
-      return booking
+      return user
         ? res.sendStatus(204)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
@@ -63,11 +63,11 @@ const bookingsController = {
   },
   destroy: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const booking: IBooking = await delay(
-        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
+      const user: IUser = await delay(
+        usersData.find((r: IUser) => r.id === Number(req.params.id)),
         500);
 
-      return booking
+      return user
         ? res.sendStatus(204)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
@@ -77,4 +77,4 @@ const bookingsController = {
   }
 }
 
-export default bookingsController;
+export default usersController;

@@ -1,15 +1,9 @@
 import createError from "http-errors";
 import express, { Express, Request, Response, NextFunction } from 'express';
 import path from 'path';
-// var createError = require('http-errors');
-// var express = require('express');
-// var path = require('path');
-// var cookieParser = require('cookie-parser');
-// var logger = require('morgan');
-
-// const roomsRouter = require('./routes/rooms.ts');
 import roomsRouter from './routes/rooms';
 import bookingsRouter from './routes/bookings';
+import usersRouter from "./routes/users";
 
 const app: Express = express();
 
@@ -23,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/rooms', roomsRouter);
 app.use('/bookings', bookingsRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next) {
