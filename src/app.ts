@@ -9,6 +9,7 @@ import path from 'path';
 
 // const roomsRouter = require('./routes/rooms.ts');
 import roomsRouter from './routes/rooms';
+import bookingsRouter from './routes/bookings';
 
 const app: Express = express();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/rooms', roomsRouter);
+app.use('/bookings', bookingsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next) {

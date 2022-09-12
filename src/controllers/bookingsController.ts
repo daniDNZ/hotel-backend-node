@@ -1,16 +1,16 @@
 import { delay } from '../assets/functions';
-import IRoom from '../interfaces/IRoom';
+import IBooking from '../interfaces/IBooking';
 import { Request, Response, NextFunction } from 'express';
-import roomsDataJSON from '../data/rooms.json';
+import bookingsDataJSON from '../data/bookings.json';
 
-const roomsData: any = roomsDataJSON;
+const bookingsData: any = bookingsDataJSON;
 
-const roomsController = {
+const bookingsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let rooms: IRoom[] = await delay(roomsData, 500);
-      return rooms
-        ? res.json(rooms)
+      const bookings: IBooking[] = await delay(bookingsData, 500);
+      return bookings
+        ? res.json(bookings)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
@@ -19,12 +19,12 @@ const roomsController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
+      const bookings: IBooking = await delay(
+        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
         500);
 
-      return room
-        ? res.json(room)
+      return bookings
+        ? res.json(bookings)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
@@ -45,14 +45,14 @@ const roomsController = {
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = req.body
-      const room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
+      const bookings: IBooking = await delay(
+        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
         500);
 
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ status: res.statusCode, message: 'No body' })
       }
-      return room
+      return bookings
         ? res.sendStatus(204)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
@@ -63,11 +63,11 @@ const roomsController = {
   },
   destroy: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
+      const bookings: IBooking = await delay(
+        bookingsData.find((r: IBooking) => r.id === Number(req.params.id)),
         500);
 
-      return room
+      return bookings
         ? res.sendStatus(204)
         : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
@@ -77,4 +77,4 @@ const roomsController = {
   }
 }
 
-export default roomsController;
+export default bookingsController;
