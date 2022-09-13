@@ -5,6 +5,7 @@ import roomsRouter from './routes/rooms';
 import bookingsRouter from './routes/bookings';
 import usersRouter from './routes/users';
 import messagesRouter from './routes/users';
+import loginRouter from './routes/login';
 
 const app: Express = express();
 
@@ -20,6 +21,7 @@ app.use('/rooms', roomsRouter);
 app.use('/bookings', bookingsRouter);
 app.use('/users', usersRouter);
 app.use('/messages', messagesRouter);
+app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {

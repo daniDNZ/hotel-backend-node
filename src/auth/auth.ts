@@ -1,6 +1,7 @@
 import IUser from 'interfaces/IUser';
 import passport from 'passport';
 import { Strategy as localStrategy } from 'passport-local';
+import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
 import usersDataJSON from '../assets/data/users.json'
 
 const usersData: any = usersDataJSON;
@@ -33,6 +34,22 @@ passport.use(
 
       } catch (error) {
         return done(error)
+      }
+    }
+  )
+)
+
+passport.use(
+  new JWTStrategy(
+    {
+      secretOrKey: 'TOP_SECRET',
+      jwtFromRequest: ExtractJwt.fromUrlQueryParameter('secret_token')
+    },
+    async (token, done) => {
+      try {
+        return done(null, token.user);
+      } catch (error) {
+        done(error);
       }
     }
   )
