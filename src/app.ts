@@ -6,6 +6,8 @@ import bookingsRouter from './routes/bookings';
 import usersRouter from './routes/users';
 import messagesRouter from './routes/users';
 import loginRouter from './routes/login';
+import passport from 'passport';
+require('./auth/auth');
 
 const app: Express = express();
 
@@ -17,10 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/rooms', roomsRouter);
-app.use('/bookings', bookingsRouter);
-app.use('/users', usersRouter);
-app.use('/messages', messagesRouter);
+app.use('/rooms', passport.authenticate('jwt', { session: false }), roomsRouter);
+app.use('/bookings', passport.authenticate('jwt', { session: false }), bookingsRouter);
+app.use('/users', passport.authenticate('jwt', { session: false }), usersRouter);
+app.use('/messages', passport.authenticate('jwt', { session: false }), messagesRouter);
 app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler

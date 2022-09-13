@@ -11,4 +11,10 @@ interface IUser {
   password: string
 }
 
+interface IUserData {
+  email: string;
+  password: string;
+}
+
 export default IUser;
+export { IUserData };
