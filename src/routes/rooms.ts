@@ -1,6 +1,6 @@
-import express from 'express';
+import { Router } from 'express';
 import roomsController from '../controllers/roomsController'
-const router = express.Router();
+const router = Router();
 
 router.route('/')
   .get(roomsController.index)

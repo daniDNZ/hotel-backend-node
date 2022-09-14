@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as localStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
-import { IUserData } from 'interfaces/IUser';
+import { IUserData } from '../interfaces/IUser';
 
 const userData: IUserData = {
   email: 'admin@admin.com',

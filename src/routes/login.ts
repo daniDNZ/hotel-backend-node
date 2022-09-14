@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import { IUserData } from 'interfaces/IUser';
+import { IUserData } from '../interfaces/IUser';
 
 const router = Router();
 
