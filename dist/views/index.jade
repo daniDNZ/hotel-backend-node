@@ -1,0 +1,121 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p (You must first log in to access the endpoints.) 
+  h2 Endpoints
+  table 
+    thead 
+      tr
+        th Endpoint 
+        th Method 
+        th Request 
+        th Response 
+    tbody 
+      tr(class='end-file') 
+        td /login
+        td POST
+        td { email: '', password: '' }
+        td Receive a token
+      tr 
+        td /bookings
+        td GET
+        td
+        td List of bookings
+      tr(class='end-file') 
+        td
+        td POST
+        td Booking in JSON
+        td Create a new booking 
+      tr 
+        td /bookings/:id
+        td GET
+        td 
+        td Get the booking
+      tr 
+        td
+        td PATCH
+        td {[keyToPatch]: [value]}
+        td Modify the booking
+      tr(class='end-file') 
+        td
+        td DELETE
+        td 
+        td Destroy the booking
+      tr 
+        td /rooms
+        td GET
+        td
+        td List of rooms
+      tr(class='end-file') 
+        td
+        td POST
+        td room in JSON
+        td Create a new room 
+      tr 
+        td /rooms/:id
+        td GET
+        td 
+        td Get the room
+      tr 
+        td
+        td PATCH
+        td {[keyToPatch]: [value]}
+        td Modify the room
+      tr(class='end-file') 
+        td
+        td DELETE
+        td 
+        td Destroy the room
+      tr 
+        td /users
+        td GET
+        td
+        td List of users
+      tr(class='end-file') 
+        td
+        td POST
+        td user in JSON
+        td Create a new user 
+      tr 
+        td /users/:id
+        td GET
+        td 
+        td Get the user
+      tr 
+        td
+        td PATCH
+        td {[keyToPatch]: [value]}
+        td Modify the user
+      tr(class='end-file') 
+        td
+        td DELETE
+        td 
+        td Destroy the user
+      tr 
+        td /messages
+        td GET
+        td
+        td List of messages
+      tr(class='end-file') 
+        td
+        td POST
+        td message in JSON
+        td Create a new message 
+      tr 
+        td /messages/:id
+        td GET
+        td 
+        td Get the message
+      tr 
+        td
+        td PATCH
+        td {[keyToPatch]: [value]}
+        td Modify the message
+      tr(class='end-file') 
+        td
+        td DELETE
+        td 
+        td Destroy the message
+   
