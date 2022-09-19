@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const passport_1 = __importDefault(require("passport"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const env_1 = __importDefault(require("../env"));
 const router = (0, express_1.Router)();
 router.route('/')
     .post((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,7 +28,8 @@ router.route('/')
                 if (error)
                     return next(error);
                 const body = { email: user.email };
-                const token = jsonwebtoken_1.default.sign({ user: body }, 'TOP_SECRET');
+                const expiresIn = 1000 * 60 * 60 * 24 * 30;
+                const token = jsonwebtoken_1.default.sign({ user: body }, env_1.default.SECRET_KEY, { expiresIn: expiresIn });
                 return res.json({ token });
             }));
         }

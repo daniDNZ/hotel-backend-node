@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = require("passport-local");
 const passport_jwt_1 = require("passport-jwt");
+const env_1 = __importDefault(require("../env"));
 const userData = {
     email: 'admin@admin.com',
     password: 'admin'
@@ -34,7 +35,7 @@ passport_1.default.use('login', new passport_local_1.Strategy({
     }
 })));
 passport_1.default.use(new passport_jwt_1.Strategy({
-    secretOrKey: 'TOP_SECRET',
+    secretOrKey: env_1.default.SECRET_KEY,
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken()
 }, (token, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -2,6 +2,7 @@ import passport from 'passport';
 import { Strategy as localStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
 import { IUserData } from '../interfaces/IUser';
+import config from '../env';
 
 const userData: IUserData = {
   email: 'admin@admin.com',
@@ -33,7 +34,7 @@ passport.use(
 passport.use(
   new JWTStrategy(
     {
-      secretOrKey: 'TOP_SECRET',
+      secretOrKey: config.SECRET_KEY,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken()
     },
     async (token: any, done: VerifiedCallback) => {
