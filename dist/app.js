@@ -15,6 +15,7 @@ const index_1 = __importDefault(require("./routes/index"));
 const passport_1 = __importDefault(require("passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 require('./auth/auth');
+require('./database/mysqlConnection');
 const app = (0, express_1.default)();
 // view engine setup
 app.set('views', path_1.default.join(__dirname, 'views'));

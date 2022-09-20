@@ -10,6 +10,7 @@ import indexRouter from './routes/index';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 require('./auth/auth');
+require('./database/mysqlConnection');
 
 const app: Express = express();
 
