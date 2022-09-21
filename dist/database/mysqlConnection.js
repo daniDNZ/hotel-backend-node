@@ -13,13 +13,10 @@ const connection = mysql_1.default.createConnection({
 });
 connection.connect((err) => {
     if (err) {
+        console.error(err);
         return console.error('ERROR: ' + err.message);
     }
     console.log('Connected to the MySQL server.');
 });
-// connection.query('SELECT * FROM prueba', (err, rows, fields) => {
-//   if (err) throw (err);
-//   console.log(rows[0].name);
-// });
 connection.end();
 exports.default = connection;
