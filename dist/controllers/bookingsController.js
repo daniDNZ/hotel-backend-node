@@ -13,6 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mysqlConnection_1 = __importDefault(require("../database/mysqlConnection"));
+const joi_1 = __importDefault(require("joi"));
+const bookingSchema = joi_1.default.object({
+    fullName: joi_1.default.string().max(255).required(),
+    checkIn: joi_1.default.date().required(),
+    checkOut: joi_1.default.date().required(),
+    orderDate: joi_1.default.date().required(),
+    specialRequest: joi_1.default.string().max(511),
+    status: joi_1.default.string().valid("checkin", "checkout", "inprogress"),
+    price: joi_1.default.number(),
+});
 const bookingsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -42,12 +52,23 @@ const bookingsController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = req.body;
-            if (Object.keys(booking).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const booking = [
+                req.body.fullName,
+                req.body.checkIn,
+                req.body.checkOut,
+                req.body.orderDate,
+                req.body.specialRequest,
+                req.body.status,
+                req.body.price,
+            ];
+            const { error } = bookingSchema.validate(req.body, { abortEarly: false });
+            if (error) {
+                console.error(error);
+                return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
             }
-            mysqlConnection_1.default.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?, ?, ?, ?, ?, ?, ?)', [booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price], (error, results, fields) => {
+            mysqlConnection_1.default.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?)', [booking], (error, results, fields) => {
                 if (error) {
+                    console.error(error);
                     return res.status(400).json({ status: res.statusCode, message: 'Bad Data' });
                 }
                 ;
@@ -61,9 +82,9 @@ const bookingsController = {
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const booking = req.body;
-            console.log(booking);
-            if (Object.keys(booking).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const { error } = bookingSchema.validate(booking, { abortEarly: false });
+            if (error) {
+                return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
             }
             mysqlConnection_1.default.query('UPDATE bookings SET fullName = ?, checkIn = ?, checkOut = ?, orderDate = ?, specialRequest = ?, status = ?, price = ? WHERE id = ?', [
                 booking.fullName,
