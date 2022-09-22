@@ -12,15 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const bookings_json_1 = __importDefault(require("../data/bookings.json"));
 const mysqlConnection_1 = __importDefault(require("../database/mysqlConnection"));
-const bookingsData = bookings_json_1.default;
 const bookingsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             mysqlConnection_1.default.query('SELECT * FROM bookings', (error, rows, fields) => {
-                res.json(rows);
+                if (rows.length === 0) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json(rows);
             });
         }
         catch (error) {
@@ -29,10 +29,12 @@ const bookingsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            return booking
-                ? res.json(booking)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            mysqlConnection_1.default.query('SELECT * FROM bookings WHERE id = ?', [req.params.id], (error, rows, fields) => {
+                if (rows.length === 0) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json(rows);
+            });
         }
         catch (error) {
             next(error);
@@ -40,10 +42,17 @@ const bookingsController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const booking = req.body;
+            if (Object.keys(booking).length === 0) {
+                return res.status(400).json({ status: res.statusCode, message: 'No body' });
+            }
+            mysqlConnection_1.default.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?, ?, ?, ?, ?, ?, ?)', [booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price], (error, results, fields) => {
+                if (error) {
+                    return res.status(400).json({ status: res.statusCode, message: 'Bad Data' });
+                }
+                ;
+                return res.status(201).json({ status: res.statusCode, message: 'Success' });
+            });
         }
         catch (error) {
             next(error);
@@ -51,14 +60,27 @@ const bookingsController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
+            const booking = req.body;
+            console.log(booking);
+            if (Object.keys(booking).length === 0) {
                 return res.status(400).json({ status: res.statusCode, message: 'No body' });
             }
-            return booking
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            mysqlConnection_1.default.query('UPDATE bookings SET fullName = ?, checkIn = ?, checkOut = ?, orderDate = ?, specialRequest = ?, status = ?, price = ? WHERE id = ?', [
+                booking.fullName,
+                booking.checkIn,
+                booking.checkOut,
+                booking.orderDate,
+                booking.specialRequest,
+                booking.status,
+                booking.price,
+                req.params.id
+            ], (error, results, fields) => {
+                if (error) {
+                    return res.status(400).json({ status: res.statusCode, message: 'Bad Data' });
+                }
+                ;
+                return res.status(201).json({ status: res.statusCode, message: 'Success' });
+            });
         }
         catch (error) {
             next(error);
@@ -66,10 +88,13 @@ const bookingsController = {
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            return booking
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            mysqlConnection_1.default.query('DELETE FROM bookings WHERE id = ?', [req.params.id], (error, rows, fields) => {
+                if (error) {
+                    return res.status(500).json({ status: res.statusCode, message: error });
+                }
+                ;
+                return res.status(204).json({ status: res.statusCode, message: 'Success' });
+            });
         }
         catch (error) {
             next(error);
