@@ -1,11 +1,11 @@
 interface IUser {
-  id: any,
-  photo: string,
+  id?: any,
+  photoId: Number,
   fullName: string,
   job: string,
   email: string,
   phone: string,
-  startDate: string,
+  startDate: Date,
   functions: string,
   state: string,
   password: string

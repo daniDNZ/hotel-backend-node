@@ -1,10 +1,9 @@
 interface IRoom {
-  id: any;
+  id?: any;
   type: string;
   number: number;
-  price: string;
+  price: Number;
   amenities: string[];
-  photos: string;
   description: string;
   offer: boolean;
   discount: number;
