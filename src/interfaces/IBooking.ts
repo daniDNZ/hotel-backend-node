@@ -1,13 +1,12 @@
 interface IBooking {
-  id: any,
+  id?: any,
   fullName: string,
-  checkIn: string,
-  checkOut: string,
-  orderDate: string,
+  checkIn: Date,
+  checkOut: Date,
+  orderDate: Date,
   specialRequest: string,
-  room: number,
   status: string,
-  price: string
+  price: Number
 }
 
 export default IBooking;

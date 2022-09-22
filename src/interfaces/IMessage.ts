@@ -1,6 +1,6 @@
 interface IMessage {
-  id: any;
-  date: string;
+  id?: any;
+  date: Date;
   customer: string;
   email: string;
   phone: string;
