@@ -3,7 +3,7 @@ interface IRoom {
   type: string;
   number: number;
   price: Number;
-  amenities: string[];
+  amenities: string;
   description: string;
   offer: boolean;
   discount: number;

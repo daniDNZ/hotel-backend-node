@@ -2,16 +2,17 @@ import { delay } from '../assets/functions';
 import IBooking from '../interfaces/IBooking';
 import { Request, Response, NextFunction } from 'express';
 import bookingsDataJSON from '../data/bookings.json';
+import connection from '../database/mysqlConnection';
 
 const bookingsData: any = bookingsDataJSON;
 
 const bookingsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const bookings: IBooking[] = await delay(bookingsData, 500);
-      return bookings
-        ? res.json(bookings)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      connection.query('SELECT * FROM bookings', (error, rows, fields) => {
+
+        res.json(rows);
+      })
 
     } catch (error) {
       next(error);

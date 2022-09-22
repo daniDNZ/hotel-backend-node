@@ -14,14 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions_1 = require("../assets/functions");
 const bookings_json_1 = __importDefault(require("../data/bookings.json"));
+const mysqlConnection_1 = __importDefault(require("../database/mysqlConnection"));
 const bookingsData = bookings_json_1.default;
 const bookingsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const bookings = yield (0, functions_1.delay)(bookingsData, 500);
-            return bookings
-                ? res.json(bookings)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            mysqlConnection_1.default.query('SELECT * FROM bookings', (error, rows, fields) => {
+                res.json(rows);
+            });
         }
         catch (error) {
             next(error);

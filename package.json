@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "npx tsc",
-    "test": "jest"
+    "test": "jest",
+    "seed": "node ./dist/database/seed.js",
+    "remove-data": "node ./dist/database/removeAllData.js"
   },
   "dependencies": {
     "@types/faker": "^6.6.9",

@@ -18,5 +18,4 @@ connection.connect((err) => {
     }
     console.log('Connected to the MySQL server.');
 });
-connection.end();
 exports.default = connection;

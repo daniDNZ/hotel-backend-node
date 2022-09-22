@@ -14,7 +14,7 @@ CREATE TABLE users(
   email VARCHAR(255),
   phone VARCHAR(255),
   startDate DATE,
-  functions DATE,
+  functions VARCHAR(255),
   state ENUM('active', 'inactive'),
   password VARCHAR(255),
   photoId INT,
