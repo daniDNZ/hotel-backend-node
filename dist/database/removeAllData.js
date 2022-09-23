@@ -19,7 +19,19 @@ const removeAllData = () => {
         if (error)
             throw error;
     });
+    mysqlConnection_1.default.query('DELETE FROM rooms', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
     mysqlConnection_1.default.query('DELETE FROM messages', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
+    mysqlConnection_1.default.query('DELETE FROM bookings_rooms', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
+    mysqlConnection_1.default.query('DELETE FROM rooms_photos', function (error, results, fields) {
         if (error)
             throw error;
     });
@@ -38,7 +50,19 @@ const resetAutoIncrements = () => {
         if (error)
             throw error;
     });
+    mysqlConnection_1.default.query('ALTER TABLE rooms AUTO_INCREMENT = 1', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
     mysqlConnection_1.default.query('ALTER TABLE messages AUTO_INCREMENT = 1', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
+    mysqlConnection_1.default.query('ALTER TABLE bookings_rooms AUTO_INCREMENT = 1', function (error, results, fields) {
+        if (error)
+            throw error;
+    });
+    mysqlConnection_1.default.query('ALTER TABLE rooms_photos AUTO_INCREMENT = 1', function (error, results, fields) {
         if (error)
             throw error;
     });
