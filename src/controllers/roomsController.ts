@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { dbQuery } from '../database/mysqlConnection';
 import Joi from 'joi';
-import { Console } from 'console';
 
 const roomSchema = Joi.object({
   type: Joi.string().max(255).required(),
