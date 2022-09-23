@@ -49,7 +49,7 @@ export function createRandomMessage(): IMessage {
     customer: faker.name.fullName(),
     email: faker.internet.email(),
     phone: faker.phone.number(),
-    subject: faker.lorem.lines(),
+    subject: faker.lorem.words(6),
     comment: faker.lorem.paragraph(),
     status: faker.helpers.arrayElement(['active', 'archived']),
   }
