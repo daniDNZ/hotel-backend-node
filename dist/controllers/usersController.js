@@ -12,16 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const users_json_1 = __importDefault(require("../data/users.json"));
-const usersData = users_json_1.default;
+const joi_1 = __importDefault(require("joi"));
+const mysqlConnection_1 = require("../database/mysqlConnection");
+const userSchema = joi_1.default.object({
+    fullName: joi_1.default.string().max(255).required(),
+    job: joi_1.default.string().max(255).required(),
+    email: joi_1.default.string().email().required(),
+    phone: joi_1.default.string().max(255),
+    startDate: joi_1.default.date(),
+    functions: joi_1.default.string().max(255).required(),
+    state: joi_1.default.string().valid('active', 'inactive'),
+    password: joi_1.default.string().max(255).required(),
+    photoId: joi_1.default.number()
+});
 const usersController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const users = yield (0, functions_1.delay)(usersData, 500);
-            return users
-                ? res.json(users)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = `SELECT * FROM users;`;
+            const results = yield (0, mysqlConnection_1.dbQuery)(query);
+            if (results.length === 0) {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
+            return res.json({ results });
         }
         catch (error) {
             next(error);
@@ -29,10 +41,12 @@ const usersController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            return user
-                ? res.json(user)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const userId = Number(req.params.id);
+            const results = yield (0, mysqlConnection_1.dbQuery)('SELECT * FROM users WHERE id = ? ;', [userId]);
+            if (results.length === 0) {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
+            return res.json({ results: results[0] });
         }
         catch (error) {
             next(error);
@@ -40,36 +54,61 @@ const usersController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const user = [
+                req.body.date,
+                req.body.customer,
+                req.body.email,
+                req.body.phone,
+                req.body.subject,
+                req.body.comment,
+                req.body.status
+            ];
+            const { error } = userSchema.validate(req.body, { abortEarly: false });
+            if (error) {
+                return res.status(400).json({ status: res.statusCode, user: error });
+            }
+            const query = 'INSERT INTO users (date, customer, email, phone, subject, comment, status) VALUES (?);';
+            const results = yield (0, mysqlConnection_1.dbQuery)(query, [user]);
+            return res.status(201).json({ status: res.statusCode, message: 'Success' });
         }
         catch (error) {
+            console.log(error);
             next(error);
         }
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const user = req.body;
+            const userId = Number(req.params.id);
+            const { error } = userSchema.validate(user, { abortEarly: false });
+            if (error) {
+                return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
             }
-            return user
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = `UPDATE users 
+        SET date = ?, customer = ?, email = ?, phone = ?, subject = ?, comment = ?, status = ?
+        WHERE id = ? ;`;
+            const results = yield (0, mysqlConnection_1.dbQuery)(query, [
+                user.date,
+                user.customer,
+                user.email,
+                user.phone,
+                user.subject,
+                user.comment,
+                user.status,
+                userId
+            ]);
+            return res.status(201).json({ status: res.statusCode, message: 'Success' });
         }
         catch (error) {
+            console.error(error);
             next(error);
         }
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            return user
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const userId = Number(req.params.id);
+            const results = yield (0, mysqlConnection_1.dbQuery)('DELETE FROM users WHERE id = ?', [userId]);
+            return res.status(204).json({ status: res.statusCode, message: 'Success' });
         }
         catch (error) {
             next(error);
