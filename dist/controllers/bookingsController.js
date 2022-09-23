@@ -83,6 +83,7 @@ const bookingsController = {
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const booking = req.body;
+            const bookingId = Number(req.params.id);
             const { error } = bookingSchema.validate(booking, { abortEarly: false });
             if (error) {
                 return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
@@ -95,7 +96,7 @@ const bookingsController = {
                 booking.specialRequest,
                 booking.status,
                 booking.price,
-                req.params.id
+                bookingId
             ]);
             return res.status(201).json({ status: res.statusCode, message: 'Success' });
         }

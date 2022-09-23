@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import connection, { dbQuery } from '../database/mysqlConnection';
+import { dbQuery } from '../database/mysqlConnection';
 import Joi from 'joi';
 
 const bookingSchema = Joi.object({
@@ -72,6 +72,7 @@ const bookingsController = {
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const booking = req.body;
+      const bookingId: Number = Number(req.params.id);
       const { error } = bookingSchema.validate(booking, { abortEarly: false });
       if (error) {
         return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
@@ -85,7 +86,7 @@ const bookingsController = {
           booking.specialRequest,
           booking.status,
           booking.price,
-          req.params.id
+          bookingId
         ]);
 
       return res.status(201).json({ status: res.statusCode, message: 'Success' });
