@@ -17,5 +17,13 @@ connection.connect((err) => {
   console.log('Connected to the MySQL server.');
 });
 
-
+export function dbQuery(query: string, params?: Array<any>): Promise<Array<any>> {
+  return new Promise((resolve, reject) => {
+    connection.query(query, params, (error, results) => {
+      if (error)
+        reject(error);
+      resolve(results);
+    });
+  });
+}
 export default connection;
