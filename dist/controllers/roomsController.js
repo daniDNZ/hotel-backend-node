@@ -63,7 +63,6 @@ const roomsController = {
                 req.body.discount,
                 req.body.cancellation
             ];
-            const rooms = req.body.rooms;
             const { error } = roomSchema.validate(req.body, { abortEarly: false });
             if (error) {
                 return res.status(400).json({ status: res.statusCode, message: error });
