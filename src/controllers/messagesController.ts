@@ -9,7 +9,7 @@ const messageSchema = Joi.object({
   phone: Joi.string().max(255),
   subject: Joi.string().max(255).required(),
   comment: Joi.string().max(512).required(),
-  status: Joi.string()
+  status: Joi.string().valid('active', 'archived')
 });
 
 const messagesController = {
