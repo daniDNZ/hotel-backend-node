@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import connection from '../database/mysqlConnection';
+import connection, { dbQuery } from '../database/mysqlConnection';
 import Joi from 'joi';
 
 const bookingSchema = Joi.object({
@@ -9,33 +9,35 @@ const bookingSchema = Joi.object({
   orderDate: Joi.date().required(),
   specialRequest: Joi.string().max(511),
   status: Joi.string().valid("checkin", "checkout", "inprogress"),
-  price: Joi.number(),
+  price: Joi.number().required(),
+  rooms: Joi.array().items(Joi.number())
 });
 
 const bookingsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      connection.query('SELECT * FROM bookings', (error, rows, fields) => {
-        if (rows.length === 0) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
-
-        return res.json(rows);
-      });
-
+      const query: string =
+        `SELECT b.*, r.type AS room FROM bookings b 
+        INNER JOIN bookings_rooms br ON b.id = br.bookingId 
+        INNER JOIN rooms r ON br.roomId = r.id
+      ;`
+      const results: Array<any> = await dbQuery(query);
+      if (results.length === 0) {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
+      return res.json({ results })
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      connection.query('SELECT * FROM bookings WHERE id = ?', [req.params.id], (error, rows, fields) => {
-        if (rows.length === 0) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
-
-        return res.json(rows);
-      });
+      const bookingId: Number = Number(req.params.id);
+      const results: Array<any> = await dbQuery('SELECT * FROM bookings WHERE id = ?', [bookingId]);
+      if (results.length === 0) {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
+      return res.json({ results: results[0] });
 
     } catch (error) {
       next(error);
@@ -52,21 +54,17 @@ const bookingsController = {
         req.body.status,
         req.body.price,
       ];
+      const rooms = req.body.rooms
       const { error } = bookingSchema.validate(req.body, { abortEarly: false });
       if (error) {
-        console.error(error);
         return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
       }
-      connection.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?)',
-        [booking],
-        (error, results, fields) => {
-          if (error) {
-            console.error(error)
-            return res.status(400).json({ status: res.statusCode, message: 'Bad Data' });
-          };
-          return res.status(201).json({ status: res.statusCode, message: 'Success' });
-        });
+      const results: any = await dbQuery('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?)', [booking]);
+      rooms.forEach(async (room: Number) => {
+        const bookingsRoomsResults = await dbQuery('INSERT INTO bookings_rooms (roomId, bookingId) VALUES (?, ?)', [room, results.insertId]);
+      });
 
+      return res.status(201).json({ status: res.statusCode, message: 'Success' });
     } catch (error) {
       next(error);
     }
@@ -78,7 +76,7 @@ const bookingsController = {
       if (error) {
         return res.status(400).json({ status: res.statusCode, message: 'Bad data' });
       }
-      connection.query('UPDATE bookings SET fullName = ?, checkIn = ?, checkOut = ?, orderDate = ?, specialRequest = ?, status = ?, price = ? WHERE id = ?',
+      const results: any = await dbQuery('UPDATE bookings SET fullName = ?, checkIn = ?, checkOut = ?, orderDate = ?, specialRequest = ?, status = ?, price = ? WHERE id = ?',
         [
           booking.fullName,
           booking.checkIn,
@@ -88,29 +86,24 @@ const bookingsController = {
           booking.status,
           booking.price,
           req.params.id
-        ],
-        (error, results, fields) => {
-          if (error) {
-            return res.status(400).json({ status: res.statusCode, message: 'Bad Data' });
-          };
-          return res.status(201).json({ status: res.statusCode, message: 'Success' });
-        });
+        ]);
+
+      return res.status(201).json({ status: res.statusCode, message: 'Success' });
     } catch (error) {
       next(error);
     }
   },
   destroy: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      connection.query('DELETE FROM bookings WHERE id = ?', [req.params.id], (error, rows, fields) => {
-        if (error) {
-          return res.status(500).json({ status: res.statusCode, message: error });
-        };
-        return res.status(204).json({ status: res.statusCode, message: 'Success' });
-      });
+      const bookingId: Number = Number(req.params.id);
+      const results: Array<any> = await dbQuery('DELETE FROM bookings WHERE id = ?', [bookingId]);
+
+      return res.status(204).json({ status: res.statusCode, message: 'Success' });
     } catch (error) {
       next(error);
     }
   }
 }
+
 
 export default bookingsController;
