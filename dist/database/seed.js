@@ -35,10 +35,11 @@ function createRandomRoom() {
 }
 exports.createRandomRoom = createRandomRoom;
 function createRandomBooking() {
+    const checkin = faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
     return {
         fullName: faker_1.faker.name.fullName(),
         checkIn: faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z'),
-        checkOut: faker_1.faker.date.between('2022-09-02T00:00:00.000Z', '2022-12-31T00:00:00.000Z'),
+        checkOut: faker_1.faker.date.between(checkin, '2023-02-31T00:00:00.000Z'),
         orderDate: faker_1.faker.date.past(),
         specialRequest: faker_1.faker.lorem.paragraph(),
         status: faker_1.faker.helpers.arrayElement(['checkin', 'checkout', 'inprogress']),
@@ -52,7 +53,7 @@ function createRandomMessage() {
         customer: faker_1.faker.name.fullName(),
         email: faker_1.faker.internet.email(),
         phone: faker_1.faker.phone.number(),
-        subject: faker_1.faker.lorem.lines(),
+        subject: faker_1.faker.lorem.words(6),
         comment: faker_1.faker.lorem.paragraph(),
         status: faker_1.faker.helpers.arrayElement(['active', 'archived']),
     };
@@ -76,28 +77,28 @@ Array.from({ length: 20 }, (value, index) => {
 });
 Array.from({ length: 10 }).forEach(() => {
     const user = createRandomUser();
-    mysqlConnection_1.default.query('INSERT INTO users (fullName, email, password, phone, startDate, functions, photoId, state, job) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [user.fullName, user.email, user.password, user.phone, user.startDate, user.functions, user.photoId, user.state, user.job], function (error, results, fields) {
+    mysqlConnection_1.default.query('INSERT INTO users (fullName, email, password, phone, startDate, functions, photoId, state, job) VALUES (?)', [[user.fullName, user.email, user.password, user.phone, user.startDate, user.functions, user.photoId, user.state, user.job]], function (error, results, fields) {
         if (error)
             throw error;
     });
 });
 Array.from({ length: 10 }).forEach(() => {
     const room = createRandomRoom();
-    mysqlConnection_1.default.query('INSERT INTO rooms (type, number, price, amenities, description, offer, discount, cancellation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [room.type, room.number, room.price, room.amenities, room.description, room.offer, room.discount, room.cancellation], function (error, results, fields) {
+    mysqlConnection_1.default.query('INSERT INTO rooms (type, number, price, amenities, description, offer, discount, cancellation) VALUES (?)', [[room.type, room.number, room.price, room.amenities, room.description, room.offer, room.discount, room.cancellation]], function (error, results, fields) {
         if (error)
             throw error;
     });
 });
 Array.from({ length: 10 }).forEach(() => {
     const booking = createRandomBooking();
-    mysqlConnection_1.default.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?, ?, ?, ?, ?, ?, ?)', [booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price], function (error, results, fields) {
+    mysqlConnection_1.default.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?)', [[booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price]], function (error, results, fields) {
         if (error)
             throw error;
     });
 });
 Array.from({ length: 10 }).forEach(() => {
     const message = createRandomMessage();
-    mysqlConnection_1.default.query('INSERT INTO messages (date, customer, email, phone, subject, comment, status) VALUES (?, ?, ?, ?, ?, ?, ?)', [message.date, message.customer, message.email, message.phone, message.subject, message.comment, message.status], function (error, results, fields) {
+    mysqlConnection_1.default.query('INSERT INTO messages (date, customer, email, phone, subject, comment, status) VALUES (?)', [[message.date, message.customer, message.email, message.phone, message.subject, message.comment, message.status]], function (error, results, fields) {
         if (error)
             throw error;
     });

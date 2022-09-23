@@ -33,10 +33,11 @@ export function createRandomRoom(): IRoom {
   }
 }
 export function createRandomBooking(): IBooking {
+  const checkin = faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
   return {
     fullName: faker.name.fullName(),
     checkIn: faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z'),
-    checkOut: faker.date.between('2022-09-02T00:00:00.000Z', '2022-12-31T00:00:00.000Z'),
+    checkOut: faker.date.between(checkin, '2023-02-31T00:00:00.000Z'),
     orderDate: faker.date.past(),
     specialRequest: faker.lorem.paragraph(),
     status: faker.helpers.arrayElement(['checkin', 'checkout', 'inprogress']),
@@ -75,8 +76,8 @@ Array.from({ length: 20 }, (value, index) => {
 
 Array.from({ length: 10 }).forEach(() => {
   const user: IUser = createRandomUser();
-  connection.query('INSERT INTO users (fullName, email, password, phone, startDate, functions, photoId, state, job) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [user.fullName, user.email, user.password, user.phone, user.startDate, user.functions, user.photoId, user.state, user.job],
+  connection.query('INSERT INTO users (fullName, email, password, phone, startDate, functions, photoId, state, job) VALUES (?)',
+    [[user.fullName, user.email, user.password, user.phone, user.startDate, user.functions, user.photoId, user.state, user.job]],
     function (error, results, fields) {
       if (error) throw error;
     })
@@ -84,8 +85,8 @@ Array.from({ length: 10 }).forEach(() => {
 
 Array.from({ length: 10 }).forEach(() => {
   const room: IRoom = createRandomRoom();
-  connection.query('INSERT INTO rooms (type, number, price, amenities, description, offer, discount, cancellation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [room.type, room.number, room.price, room.amenities, room.description, room.offer, room.discount, room.cancellation],
+  connection.query('INSERT INTO rooms (type, number, price, amenities, description, offer, discount, cancellation) VALUES (?)',
+    [[room.type, room.number, room.price, room.amenities, room.description, room.offer, room.discount, room.cancellation]],
     function (error, results, fields) {
       if (error) throw error;
     })
@@ -93,8 +94,8 @@ Array.from({ length: 10 }).forEach(() => {
 
 Array.from({ length: 10 }).forEach(() => {
   const booking: IBooking = createRandomBooking();
-  connection.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price],
+  connection.query('INSERT INTO bookings (fullName, checkIn, checkOut, orderDate, specialRequest, status, price) VALUES (?)',
+    [[booking.fullName, booking.checkIn, booking.checkOut, booking.orderDate, booking.specialRequest, booking.status, booking.price]],
     function (error, results, fields) {
       if (error) throw error;
     })
@@ -102,8 +103,8 @@ Array.from({ length: 10 }).forEach(() => {
 
 Array.from({ length: 10 }).forEach(() => {
   const message: IMessage = createRandomMessage();
-  connection.query('INSERT INTO messages (date, customer, email, phone, subject, comment, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [message.date, message.customer, message.email, message.phone, message.subject, message.comment, message.status],
+  connection.query('INSERT INTO messages (date, customer, email, phone, subject, comment, status) VALUES (?)',
+    [[message.date, message.customer, message.email, message.phone, message.subject, message.comment, message.status]],
     function (error, results, fields) {
       if (error) throw error;
     })
