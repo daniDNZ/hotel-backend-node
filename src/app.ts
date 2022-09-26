@@ -9,6 +9,7 @@ import loginRouter from './routes/login';
 import indexRouter from './routes/index';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
+import mongoConnection from './db/connection';
 require('./auth/auth');
 
 const app: Express = express();
@@ -21,6 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+mongoConnection().catch(err => console.error(err));
 
 app.use('/', indexRouter);
 app.use('/rooms', passport.authenticate('jwt', { session: false }), roomsRouter);
