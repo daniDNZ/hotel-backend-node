@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRandomMessage = exports.createRandomBooking = exports.createRandomRoom = exports.createRandomUser = exports.MESSAGES = exports.BOOKINGS = exports.ROOMS = exports.USERS = void 0;
+exports.createRandomPhoto = exports.createRandomMessage = exports.createRandomBooking = exports.createRandomRoom = exports.createRandomUser = exports.PHOTOS = exports.MESSAGES = exports.BOOKINGS = exports.ROOMS = exports.USERS = void 0;
 const faker_1 = require("@faker-js/faker");
 exports.USERS = [];
 exports.ROOMS = [];
 exports.BOOKINGS = [];
 exports.MESSAGES = [];
+exports.PHOTOS = [];
 function createRandomUser() {
     return {
         fullName: faker_1.faker.name.fullName(),
@@ -57,6 +58,12 @@ function createRandomMessage() {
     };
 }
 exports.createRandomMessage = createRandomMessage;
+function createRandomPhoto() {
+    return {
+        url: faker_1.faker.image.cats()
+    };
+}
+exports.createRandomPhoto = createRandomPhoto;
 Array.from({ length: 10 }).forEach(() => {
     exports.USERS.push(createRandomUser());
 });
@@ -69,7 +76,6 @@ Array.from({ length: 10 }).forEach(() => {
 Array.from({ length: 10 }).forEach(() => {
     exports.MESSAGES.push(createRandomMessage());
 });
-console.log(exports.USERS);
-console.log(exports.ROOMS);
-console.log(exports.MESSAGES);
-console.log(exports.BOOKINGS);
+Array.from({ length: 20 }).forEach(() => {
+    exports.PHOTOS.push(createRandomPhoto());
+});
