@@ -1,13 +1,13 @@
 interface IUser {
   id?: any,
-  photoId: Number,
+  photo: string,
   fullName: string,
   job: string,
   email: string,
   phone: string,
   startDate: Date,
   functions: string,
-  state: string,
+  status: boolean,
   password: string
 }
 

@@ -6,7 +6,8 @@ interface IBooking {
   orderDate: Date,
   specialRequest: string,
   status: string,
-  price: Number
+  price: Number,
+  rooms: Array<any>
 }
 
 export default IBooking;
