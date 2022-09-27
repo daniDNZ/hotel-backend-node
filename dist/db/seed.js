@@ -15,8 +15,8 @@ function createRandomUser() {
         phone: faker_1.faker.phone.number(),
         startDate: faker_1.faker.date.past(),
         functions: faker_1.faker.lorem.lines(),
-        photoId: faker_1.faker.helpers.arrayElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-        state: faker_1.faker.helpers.arrayElement(['active', 'inactive']),
+        photo: faker_1.faker.image.avatar(),
+        state: faker_1.faker.datatype.boolean(),
         job: faker_1.faker.helpers.arrayElement(['Manager', 'Servicio de habitaciones', 'Administración'])
     };
 }
@@ -35,10 +35,11 @@ function createRandomRoom() {
 }
 exports.createRandomRoom = createRandomRoom;
 function createRandomBooking() {
+    const checkin = faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
     return {
         fullName: faker_1.faker.name.fullName(),
-        checkIn: faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z'),
-        checkOut: faker_1.faker.date.between('2022-09-02T00:00:00.000Z', '2022-12-31T00:00:00.000Z'),
+        checkIn: checkin,
+        checkOut: faker_1.faker.date.between(checkin, '2022-12-31T00:00:00.000Z'),
         orderDate: faker_1.faker.date.past(),
         specialRequest: faker_1.faker.lorem.paragraph(),
         status: faker_1.faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),

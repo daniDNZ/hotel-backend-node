@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
-import IBooking from './interfaces/IBooking';
-import IMessage from './interfaces/IMessage';
-import IRoom from './interfaces/IRoom';
-import IUser from './interfaces/IUser';
-import IPhoto from './interfaces/IPhoto';
+import IBooking from '../interfaces/IBooking';
+import IMessage from '../interfaces/IMessage';
+import IRoom from '../interfaces/IRoom';
+import IUser from '../interfaces/IUser';
+import IPhoto from '../interfaces/IPhoto';
 
 export const USERS: IUser[] = [];
 export const ROOMS: IRoom[] = [];
@@ -19,8 +19,8 @@ export function createRandomUser(): IUser {
     phone: faker.phone.number(),
     startDate: faker.date.past(),
     functions: faker.lorem.lines(),
-    photoId: faker.helpers.arrayElement([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    state: faker.helpers.arrayElement(['active', 'inactive']),
+    photo: faker.image.avatar(),
+    state: faker.datatype.boolean(),
     job: faker.helpers.arrayElement(['Manager', 'Servicio de habitaciones', 'Administración'])
   }
 }
@@ -37,10 +37,11 @@ export function createRandomRoom(): IRoom {
   }
 }
 export function createRandomBooking(): IBooking {
+  const checkin = faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
   return {
     fullName: faker.name.fullName(),
-    checkIn: faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z'),
-    checkOut: faker.date.between('2022-09-02T00:00:00.000Z', '2022-12-31T00:00:00.000Z'),
+    checkIn: checkin,
+    checkOut: faker.date.between(checkin, '2022-12-31T00:00:00.000Z'),
     orderDate: faker.date.past(),
     specialRequest: faker.lorem.paragraph(),
     status: faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),
