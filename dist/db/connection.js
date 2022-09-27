@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 function mongoConnection() {
     return __awaiter(this, void 0, void 0, function* () {
-        yield mongoose_1.default.connect('mongodb://127.0.0.1:27017/test');
+        yield mongoose_1.default.connect('mongodb://127.0.0.1:27017/miranda_db');
         console.info('Mongo connected!');
     });
 }
