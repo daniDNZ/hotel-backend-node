@@ -42,7 +42,7 @@ export function createRandomBooking(): IBooking {
     fullName: faker.name.fullName(),
     checkIn: checkin,
     checkOut: faker.date.between(checkin, '2022-12-31T00:00:00.000Z'),
-    orderDate: faker.date.past(),
+    orderDate: faker.date.between('2022-04-01T00:00:00.000Z', checkin),
     specialRequest: faker.lorem.paragraph(),
     status: faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),
     price: faker.datatype.float({ max: 5000 }),
