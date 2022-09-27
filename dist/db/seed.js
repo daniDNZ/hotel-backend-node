@@ -1,12 +1,25 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createRandomPhoto = exports.createRandomMessage = exports.createRandomBooking = exports.createRandomRoom = exports.createRandomUser = exports.PHOTOS = exports.MESSAGES = exports.BOOKINGS = exports.ROOMS = exports.USERS = void 0;
+exports.createRandomMessage = exports.createRandomBooking = exports.createRandomRoom = exports.createRandomUser = exports.MESSAGES = exports.BOOKINGS = exports.ROOMS = exports.USERS = void 0;
 const faker_1 = require("@faker-js/faker");
+const schemas_1 = require("./schemas");
+const connection_1 = __importDefault(require("./connection"));
 exports.USERS = [];
 exports.ROOMS = [];
 exports.BOOKINGS = [];
 exports.MESSAGES = [];
-exports.PHOTOS = [];
 function createRandomUser() {
     return {
         fullName: faker_1.faker.name.fullName(),
@@ -16,7 +29,7 @@ function createRandomUser() {
         startDate: faker_1.faker.date.past(),
         functions: faker_1.faker.lorem.lines(),
         photo: faker_1.faker.image.avatar(),
-        state: faker_1.faker.datatype.boolean(),
+        status: faker_1.faker.datatype.boolean(),
         job: faker_1.faker.helpers.arrayElement(['Manager', 'Servicio de habitaciones', 'Administración'])
     };
 }
@@ -24,7 +37,7 @@ exports.createRandomUser = createRandomUser;
 function createRandomRoom() {
     return {
         type: faker_1.faker.helpers.arrayElement(['Single', 'Double', 'Excelsior']),
-        number: faker_1.faker.datatype.number({ min: 1, max: 20 }),
+        number: String(faker_1.faker.datatype.number({ min: 1, max: 20 })),
         price: faker_1.faker.datatype.float({ max: 600 }),
         amenities: faker_1.faker.helpers.arrayElements(['3 Bed Space', 'Television', '24 Hours Guard', 'Wi-Fi']),
         description: faker_1.faker.lorem.paragraph(),
@@ -44,6 +57,7 @@ function createRandomBooking() {
         specialRequest: faker_1.faker.lorem.paragraph(),
         status: faker_1.faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),
         price: faker_1.faker.datatype.float({ max: 5000 }),
+        rooms: []
     };
 }
 exports.createRandomBooking = createRandomBooking;
@@ -55,16 +69,10 @@ function createRandomMessage() {
         phone: faker_1.faker.phone.number(),
         subject: faker_1.faker.lorem.lines(),
         comment: faker_1.faker.lorem.paragraph(),
-        status: faker_1.faker.helpers.arrayElement(['', 'archived']),
+        status: faker_1.faker.datatype.boolean(),
     };
 }
 exports.createRandomMessage = createRandomMessage;
-function createRandomPhoto() {
-    return {
-        url: faker_1.faker.image.cats()
-    };
-}
-exports.createRandomPhoto = createRandomPhoto;
 Array.from({ length: 10 }).forEach(() => {
     exports.USERS.push(createRandomUser());
 });
@@ -77,6 +85,34 @@ Array.from({ length: 10 }).forEach(() => {
 Array.from({ length: 10 }).forEach(() => {
     exports.MESSAGES.push(createRandomMessage());
 });
-Array.from({ length: 20 }).forEach(() => {
-    exports.PHOTOS.push(createRandomPhoto());
-});
+seed();
+function seed() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield (0, connection_1.default)();
+        schemas_1.Room.insertMany(exports.ROOMS, (err) => {
+            if (err)
+                console.error(err);
+            else
+                console.info('Rooms created');
+        });
+        schemas_1.User.insertMany(exports.USERS, (err) => {
+            if (err)
+                console.error(err);
+            else
+                console.info('Users created');
+        });
+        schemas_1.Booking.insertMany(exports.BOOKINGS, (err) => {
+            if (err)
+                console.error(err);
+            else
+                console.info('Bookings created');
+        });
+        schemas_1.Message.insertMany(exports.MESSAGES, (err) => {
+            if (err)
+                console.error(err);
+            else
+                console.info('Messages created');
+        });
+    });
+}
+;
