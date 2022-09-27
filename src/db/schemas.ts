@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-const { Schema } = mongoose;
+import { model, Schema, InferSchemaType } from 'mongoose';
 
 const messageSchema = new Schema({
   date: Date,
@@ -34,7 +33,7 @@ const roomSchema = new Schema({
   cancellation: String
 });
 
-const BookingSchema = new Schema({
+const bookingSchema = new Schema({
   fullName: String,
   checkIn: Date,
   checkOut: Date,
@@ -42,8 +41,27 @@ const BookingSchema = new Schema({
   specialRequest: String,
   status: {
     type: String,
-    enum: ["checkin", "checkout", "inprogress"]
+    enum: ["checkIn", "checkOut", "inProgress"],
+    default: "checkIn"
   },
   price: Number,
-  rooms: [roomSchema]
+  rooms: [
+    {
+      id: String,
+      type: String,
+      number: String
+    }
+  ]
 });
+
+type IUser = InferSchemaType<typeof userSchema>;
+type IBooking = InferSchemaType<typeof bookingSchema>;
+type IRoom = InferSchemaType<typeof roomSchema>;
+type IMessage = InferSchemaType<typeof messageSchema>;
+
+const User = model('User', userSchema);
+const Room = model('Room', roomSchema);
+const Booking = model('Booking', bookingSchema);
+const Message = model('Message', messageSchema);
+
+export { User, Room, Booking, Message, IUser, IBooking, IRoom, IMessage };

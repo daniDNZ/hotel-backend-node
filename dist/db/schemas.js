@@ -1,11 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const { Schema } = mongoose_1.default;
-const messageSchema = new Schema({
+exports.Message = exports.Booking = exports.Room = exports.User = void 0;
+const mongoose_1 = require("mongoose");
+const messageSchema = new mongoose_1.Schema({
     date: Date,
     customer: String,
     email: String,
@@ -14,7 +11,7 @@ const messageSchema = new Schema({
     comment: String,
     status: Boolean
 });
-const userSchema = new Schema({
+const userSchema = new mongoose_1.Schema({
     fullName: String,
     job: String,
     email: String,
@@ -25,7 +22,7 @@ const userSchema = new Schema({
     password: String,
     photo: String
 });
-const roomSchema = new Schema({
+const roomSchema = new mongoose_1.Schema({
     type: String,
     number: String,
     price: Number,
@@ -35,7 +32,7 @@ const roomSchema = new Schema({
     discount: Number,
     cancellation: String
 });
-const BookingSchema = new Schema({
+const bookingSchema = new mongoose_1.Schema({
     fullName: String,
     checkIn: Date,
     checkOut: Date,
@@ -43,8 +40,23 @@ const BookingSchema = new Schema({
     specialRequest: String,
     status: {
         type: String,
-        enum: ["checkin", "checkout", "inprogress"]
+        enum: ["checkIn", "checkOut", "inProgress"],
+        default: "checkIn"
     },
     price: Number,
-    rooms: [roomSchema]
+    rooms: [
+        {
+            id: String,
+            type: String,
+            number: String
+        }
+    ]
 });
+const User = (0, mongoose_1.model)('User', userSchema);
+exports.User = User;
+const Room = (0, mongoose_1.model)('Room', roomSchema);
+exports.Room = Room;
+const Booking = (0, mongoose_1.model)('Booking', bookingSchema);
+exports.Booking = Booking;
+const Message = (0, mongoose_1.model)('Message', messageSchema);
+exports.Message = Message;
