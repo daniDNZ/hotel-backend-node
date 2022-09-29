@@ -8,20 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const bookings_json_1 = __importDefault(require("../data/bookings.json"));
-const bookingsData = bookings_json_1.default;
+const schemas_1 = require("../db/schemas");
 const bookingsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const bookings = yield (0, functions_1.delay)(bookingsData, 500);
-            return bookings
-                ? res.json(bookings)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Booking.find();
+            query.exec((err, bookings) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ bookings });
+            });
         }
         catch (error) {
             next(error);
@@ -29,10 +27,15 @@ const bookingsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            return booking
-                ? res.json(booking)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Booking.find()
+                .where("_id")
+                .equals(req.params.id);
+            query.exec((err, booking) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ booking });
+            });
         }
         catch (error) {
             next(error);
@@ -40,10 +43,13 @@ const bookingsController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const newBooking = new schemas_1.Booking(req.body);
+            newBooking.save((err, booking) => {
+                if (err) {
+                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+                }
+                return res.json({ booking });
+            });
         }
         catch (error) {
             next(error);
@@ -51,14 +57,10 @@ const bookingsController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
-            }
-            return booking
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const response = yield schemas_1.Booking.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            if (response)
+                return res.json({ response });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
@@ -66,10 +68,10 @@ const bookingsController = {
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = yield (0, functions_1.delay)(bookingsData.find((r) => r.id === Number(req.params.id)), 500);
-            return booking
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const bdResponse = yield schemas_1.Booking.deleteOne({ _id: req.params.id });
+            if (bdResponse.deletedCount > 0)
+                return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
