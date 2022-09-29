@@ -1,31 +1,32 @@
-import { delay } from '../assets/functions';
-import IUser from '../interfaces/IUser';
 import { Request, Response, NextFunction } from 'express';
-import usersDataJSON from '../data/users.json';
-
-const usersData: any = usersDataJSON;
+import { User } from '../db/schemas';
 
 const usersController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users: IUser[] = await delay(usersData, 500);
-      return users
-        ? res.json(users)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-
+      const query = User.find();
+      query.exec((err, users) => {
+        if (err) {
+          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+        }
+        return res.json({ users });
+      })
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user: IUser = await delay(
-        usersData.find((r: IUser) => r.id === Number(req.params.id)),
-        500);
+      const query = User.find()
+        .where("_id")
+        .equals(req.params.id);
 
-      return user
-        ? res.json(user)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      query.exec((err, user) => {
+        if (err) {
+          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+        }
+        return res.json({ user });
+      })
 
     } catch (error) {
       next(error);
@@ -33,29 +34,22 @@ const usersController = {
   },
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body;
-
-      return Object.keys(data).length > 0
-        ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-        : res.status(400).json({ status: res.statusCode, message: 'No body' })
+      const newUser = new User(req.body);
+      newUser.save((err, user) => {
+        if (err) {
+          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
+        }
+        return res.json({ user });
+      });
     } catch (error) {
       next(error);
     }
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body
-      const user: IUser = await delay(
-        usersData.find((r: IUser) => r.id === Number(req.params.id)),
-        500);
-
-      if (Object.keys(data).length === 0) {
-        return res.status(400).json({ status: res.statusCode, message: 'No body' })
-      }
-      return user
-        ? res.sendStatus(204)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-
+      const user = await User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      if (user) return res.json({ user });
+      return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
       next(error);
@@ -63,13 +57,9 @@ const usersController = {
   },
   destroy: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user: IUser = await delay(
-        usersData.find((r: IUser) => r.id === Number(req.params.id)),
-        500);
-
-      return user
-        ? res.sendStatus(204)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      const bdResponse = await User.deleteOne({ _id: req.params.id });
+      if (bdResponse.deletedCount > 0) return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+      return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
       next(error);
