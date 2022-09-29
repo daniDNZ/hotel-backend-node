@@ -8,20 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const messages_json_1 = __importDefault(require("../data/messages.json"));
-const messagesData = messages_json_1.default;
+const schemas_1 = require("../db/schemas");
 const messagesController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const messages = yield (0, functions_1.delay)(messagesData, 500);
-            return messages
-                ? res.json(messages)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Message.find();
+            query.exec((err, messages) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ messages });
+            });
         }
         catch (error) {
             next(error);
@@ -29,10 +27,15 @@ const messagesController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const message = yield (0, functions_1.delay)(messagesData.find((r) => r.id === Number(req.params.id)), 500);
-            return message
-                ? res.json(message)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Message.find()
+                .where("_id")
+                .equals(req.params.id);
+            query.exec((err, message) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ message });
+            });
         }
         catch (error) {
             next(error);
@@ -40,10 +43,13 @@ const messagesController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const newMessage = new schemas_1.Message(req.body);
+            newMessage.save((err, message) => {
+                if (err) {
+                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+                }
+                return res.json({ message });
+            });
         }
         catch (error) {
             next(error);
@@ -51,14 +57,10 @@ const messagesController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const message = yield (0, functions_1.delay)(messagesData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
-            }
-            return message
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const message = yield schemas_1.Message.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            if (message)
+                return res.json({ message });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
@@ -66,10 +68,10 @@ const messagesController = {
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const message = yield (0, functions_1.delay)(messagesData.find((r) => r.id === Number(req.params.id)), 500);
-            return message
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const bdResponse = yield schemas_1.Message.deleteOne({ _id: req.params.id });
+            if (bdResponse.deletedCount > 0)
+                return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
