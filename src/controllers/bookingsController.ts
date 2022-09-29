@@ -47,8 +47,8 @@ const bookingsController = {
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const response = await Booking.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-      if (response) return res.json({ response });
+      const booking = await Booking.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      if (booking) return res.json({ booking });
       return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {

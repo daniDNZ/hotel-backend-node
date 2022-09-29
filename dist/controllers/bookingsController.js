@@ -57,9 +57,9 @@ const bookingsController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const response = yield schemas_1.Booking.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
-            if (response)
-                return res.json({ response });
+            const booking = yield schemas_1.Booking.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            if (booking)
+                return res.json({ booking });
             return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
