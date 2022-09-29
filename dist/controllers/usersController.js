@@ -8,20 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const users_json_1 = __importDefault(require("../data/users.json"));
-const usersData = users_json_1.default;
+const schemas_1 = require("../db/schemas");
 const usersController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const users = yield (0, functions_1.delay)(usersData, 500);
-            return users
-                ? res.json(users)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.User.find();
+            query.exec((err, users) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ users });
+            });
         }
         catch (error) {
             next(error);
@@ -29,10 +27,15 @@ const usersController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            return user
-                ? res.json(user)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.User.find()
+                .where("_id")
+                .equals(req.params.id);
+            query.exec((err, user) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ user });
+            });
         }
         catch (error) {
             next(error);
@@ -40,10 +43,13 @@ const usersController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const newUser = new schemas_1.User(req.body);
+            newUser.save((err, user) => {
+                if (err) {
+                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+                }
+                return res.json({ user });
+            });
         }
         catch (error) {
             next(error);
@@ -51,14 +57,10 @@ const usersController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
-            }
-            return user
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const user = yield schemas_1.User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            if (user)
+                return res.json({ user });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
@@ -66,10 +68,10 @@ const usersController = {
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const user = yield (0, functions_1.delay)(usersData.find((r) => r.id === Number(req.params.id)), 500);
-            return user
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const bdResponse = yield schemas_1.User.deleteOne({ _id: req.params.id });
+            if (bdResponse.deletedCount > 0)
+                return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);

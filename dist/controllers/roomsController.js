@@ -8,20 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../assets/functions");
-const rooms_json_1 = __importDefault(require("../data/rooms.json"));
-const roomsData = rooms_json_1.default;
+const schemas_1 = require("../db/schemas");
 const roomsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let rooms = yield (0, functions_1.delay)(roomsData, 500);
-            return rooms
-                ? res.json(rooms)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Room.find();
+            query.exec((err, rooms) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ rooms });
+            });
         }
         catch (error) {
             next(error);
@@ -29,10 +27,15 @@ const roomsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            let room = yield (0, functions_1.delay)(roomsData.find((r) => r.id === Number(req.params.id)), 500);
-            return room
-                ? res.json(room)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const query = schemas_1.Room.find()
+                .where("_id")
+                .equals(req.params.id);
+            query.exec((err, room) => {
+                if (err) {
+                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+                }
+                return res.json({ room });
+            });
         }
         catch (error) {
             next(error);
@@ -40,10 +43,13 @@ const roomsController = {
     }),
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            return Object.keys(data).length > 0
-                ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-                : res.status(400).json({ status: res.statusCode, message: 'No body' });
+            const newRoom = new schemas_1.Room(req.body);
+            newRoom.save((err, room) => {
+                if (err) {
+                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+                }
+                return res.json({ room });
+            });
         }
         catch (error) {
             next(error);
@@ -51,14 +57,10 @@ const roomsController = {
     }),
     update: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const data = req.body;
-            const room = yield (0, functions_1.delay)(roomsData.find((r) => r.id === Number(req.params.id)), 500);
-            if (Object.keys(data).length === 0) {
-                return res.status(400).json({ status: res.statusCode, message: 'No body' });
-            }
-            return room
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const room = yield schemas_1.Room.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+            if (room)
+                return res.json({ room });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);
@@ -66,10 +68,10 @@ const roomsController = {
     }),
     destroy: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const room = yield (0, functions_1.delay)(roomsData.find((r) => r.id === Number(req.params.id)), 500);
-            return room
-                ? res.sendStatus(204)
-                : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            const bdResponse = yield schemas_1.Room.deleteOne({ _id: req.params.id });
+            if (bdResponse.deletedCount > 0)
+                return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+            return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
         }
         catch (error) {
             next(error);

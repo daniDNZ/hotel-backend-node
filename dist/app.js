@@ -14,6 +14,7 @@ const login_1 = __importDefault(require("./routes/login"));
 const index_1 = __importDefault(require("./routes/index"));
 const passport_1 = __importDefault(require("passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const connection_1 = __importDefault(require("./db/connection"));
 require('./auth/auth');
 const app = (0, express_1.default)();
 // view engine setup
@@ -23,6 +24,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+(0, connection_1.default)().catch(err => console.error(err));
 app.use('/', index_1.default);
 app.use('/rooms', passport_1.default.authenticate('jwt', { session: false }), rooms_1.default);
 app.use('/bookings', passport_1.default.authenticate('jwt', { session: false }), bookings_1.default);

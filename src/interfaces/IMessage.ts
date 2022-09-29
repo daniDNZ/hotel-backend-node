@@ -6,7 +6,7 @@ interface IMessage {
   phone: string;
   subject: string;
   comment: string;
-  status: string;
+  status: boolean;
 }
 
 export default IMessage;
