@@ -1,4 +1,4 @@
-import { model, Schema, InferSchemaType } from 'mongoose';
+import mongoose, { model, Schema, InferSchemaType } from 'mongoose';
 
 const messageSchema = new Schema({
   date: Date,
@@ -33,6 +33,12 @@ const roomSchema = new Schema({
   cancellation: String
 });
 
+export enum StatusEnum {
+  checkIn = 'checkIn',
+  checkOut = 'checkOut',
+  inProgress = 'inProgress'
+}
+
 const bookingSchema = new Schema({
   fullName: String,
   checkIn: Date,
@@ -42,14 +48,14 @@ const bookingSchema = new Schema({
   status: {
     type: String,
     enum: ["checkIn", "checkOut", "inProgress"],
-    default: "checkIn"
+    default: "checkIn",
+    required: true
   },
   price: Number,
   rooms: [
     {
-      id: String,
-      type: String,
-      number: String
+      type: Schema.Types.ObjectId,
+      ref: "Room"
     }
   ]
 });

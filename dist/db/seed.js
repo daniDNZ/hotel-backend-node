@@ -48,14 +48,16 @@ function createRandomRoom() {
 }
 exports.createRandomRoom = createRandomRoom;
 function createRandomBooking() {
-    const checkin = faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
+    const checkIn = faker_1.faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
+    const statusStr = faker_1.faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']);
+    const status = schemas_1.StatusEnum[statusStr];
     return {
         fullName: faker_1.faker.name.fullName(),
-        checkIn: checkin,
-        checkOut: faker_1.faker.date.between(checkin, '2022-12-31T00:00:00.000Z'),
-        orderDate: faker_1.faker.date.between('2022-04-01T00:00:00.000Z', checkin),
+        checkIn,
+        checkOut: faker_1.faker.date.between(checkIn, '2022-12-31T00:00:00.000Z'),
+        orderDate: faker_1.faker.date.between('2022-04-01T00:00:00.000Z', checkIn),
         specialRequest: faker_1.faker.lorem.paragraph(),
-        status: faker_1.faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),
+        status,
         price: faker_1.faker.datatype.float({ max: 5000 }),
         rooms: []
     };

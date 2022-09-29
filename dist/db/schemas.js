@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Message = exports.Booking = exports.Room = exports.User = void 0;
+exports.Message = exports.Booking = exports.Room = exports.User = exports.StatusEnum = void 0;
 const mongoose_1 = require("mongoose");
 const messageSchema = new mongoose_1.Schema({
     date: Date,
@@ -32,6 +32,12 @@ const roomSchema = new mongoose_1.Schema({
     discount: Number,
     cancellation: String
 });
+var StatusEnum;
+(function (StatusEnum) {
+    StatusEnum["checkIn"] = "checkIn";
+    StatusEnum["checkOut"] = "checkOut";
+    StatusEnum["inProgress"] = "inProgress";
+})(StatusEnum = exports.StatusEnum || (exports.StatusEnum = {}));
 const bookingSchema = new mongoose_1.Schema({
     fullName: String,
     checkIn: Date,
@@ -41,14 +47,14 @@ const bookingSchema = new mongoose_1.Schema({
     status: {
         type: String,
         enum: ["checkIn", "checkOut", "inProgress"],
-        default: "checkIn"
+        default: "checkIn",
+        required: true
     },
     price: Number,
     rooms: [
         {
-            id: String,
-            type: String,
-            number: String
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Room"
         }
     ]
 });

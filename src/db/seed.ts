@@ -1,11 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { Booking, IBooking, IMessage, IRoom, IUser, Message, Room, User } from './schemas';
+import { Booking, IBooking, IMessage, IRoom, IUser, Message, Room, StatusEnum, User } from './schemas';
 import mongoConnection from './connection';
-import mongoose from 'mongoose';
 
 export const USERS: IUser[] = [];
 export const ROOMS: IRoom[] = [];
-export const BOOKINGS: any[] = [];
+export const BOOKINGS: IBooking[] = [];
 export const MESSAGES: IMessage[] = [];
 
 export function createRandomUser() {
@@ -34,14 +33,16 @@ export function createRandomRoom() {
   }
 }
 export function createRandomBooking() {
-  const checkin = faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
+  const checkIn: Date = faker.date.between('2022-09-01T00:00:00.000Z', '2022-12-20T00:00:00.000Z');
+  const statusStr = faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']) as StatusEnum;
+  const status: StatusEnum = StatusEnum[statusStr];
   return {
     fullName: faker.name.fullName(),
-    checkIn: checkin,
-    checkOut: faker.date.between(checkin, '2022-12-31T00:00:00.000Z'),
-    orderDate: faker.date.between('2022-04-01T00:00:00.000Z', checkin),
+    checkIn,
+    checkOut: faker.date.between(checkIn, '2022-12-31T00:00:00.000Z'),
+    orderDate: faker.date.between('2022-04-01T00:00:00.000Z', checkIn),
     specialRequest: faker.lorem.paragraph(),
-    status: faker.helpers.arrayElement(['checkIn', 'checkOut', 'inProgress']),
+    status,
     price: faker.datatype.float({ max: 5000 }),
     rooms: []
   }
@@ -57,7 +58,6 @@ export function createRandomMessage() {
     status: faker.datatype.boolean(),
   }
 }
-
 
 Array.from({ length: 10 }).forEach(() => {
   USERS.push(createRandomUser());
