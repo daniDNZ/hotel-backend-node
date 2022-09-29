@@ -86,12 +86,32 @@ async function seed() {
     if (err) console.error(err)
     else console.info('Users created');
   });
-  Booking.insertMany(BOOKINGS, (err) => {
-    if (err) console.error(err)
-    else console.info('Bookings created');
+
+  Room.find().exec((err: any, results: any) => {
+    const rooms = JSON.parse(JSON.stringify(results))
+    BOOKINGS.forEach((booking) => {
+
+      if (getRandomInt(2) === 1) {
+        booking.rooms.push(rooms[getRandomInt(10)]._id)
+      } else {
+        for (let i = 0; i < 2; i++) {
+          booking.rooms.push(rooms[getRandomInt(10)]._id)
+        }
+      }
+    });
+    Booking.insertMany(BOOKINGS, (err) => {
+      if (err) console.error(err)
+      else console.info('Bookings created');
+    });
   });
+
+
   Message.insertMany(MESSAGES, (err) => {
     if (err) console.error(err)
     else console.info('Messages created');
   });
 };
+
+function getRandomInt(max: number) {
+  return Math.floor(Math.random() * max);
+}

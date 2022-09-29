@@ -103,11 +103,24 @@ function seed() {
             else
                 console.info('Users created');
         });
-        schemas_1.Booking.insertMany(exports.BOOKINGS, (err) => {
-            if (err)
-                console.error(err);
-            else
-                console.info('Bookings created');
+        schemas_1.Room.find().exec((err, results) => {
+            const rooms = JSON.parse(JSON.stringify(results));
+            exports.BOOKINGS.forEach((booking) => {
+                if (getRandomInt(2) === 1) {
+                    booking.rooms.push(rooms[getRandomInt(10)]._id);
+                }
+                else {
+                    for (let i = 0; i < 2; i++) {
+                        booking.rooms.push(rooms[getRandomInt(10)]._id);
+                    }
+                }
+            });
+            schemas_1.Booking.insertMany(exports.BOOKINGS, (err) => {
+                if (err)
+                    console.error(err);
+                else
+                    console.info('Bookings created');
+            });
         });
         schemas_1.Message.insertMany(exports.MESSAGES, (err) => {
             if (err)
@@ -118,3 +131,6 @@ function seed() {
     });
 }
 ;
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
