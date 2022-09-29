@@ -1,31 +1,32 @@
-import { delay } from '../assets/functions';
-import IRoom from '../interfaces/IRoom';
 import { Request, Response, NextFunction } from 'express';
-import roomsDataJSON from '../data/rooms.json';
-
-const roomsData: any = roomsDataJSON;
+import { Room } from '../db/schemas';
 
 const roomsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let rooms: IRoom[] = await delay(roomsData, 500);
-      return rooms
-        ? res.json(rooms)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-
+      const query = Room.find();
+      query.exec((err, rooms) => {
+        if (err) {
+          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+        }
+        return res.json({ rooms });
+      })
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
-        500);
+      const query = Room.find()
+        .where("_id")
+        .equals(req.params.id);
 
-      return room
-        ? res.json(room)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      query.exec((err, room) => {
+        if (err) {
+          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+        }
+        return res.json({ room });
+      })
 
     } catch (error) {
       next(error);
@@ -33,29 +34,22 @@ const roomsController = {
   },
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body;
-
-      return Object.keys(data).length > 0
-        ? res.status(201).json({ status: res.statusCode, message: 'Success' })
-        : res.status(400).json({ status: res.statusCode, message: 'No body' })
+      const newRoom = new Room(req.body);
+      newRoom.save((err, room) => {
+        if (err) {
+          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
+        }
+        return res.json({ room });
+      });
     } catch (error) {
       next(error);
     }
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body
-      const room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
-        500);
-
-      if (Object.keys(data).length === 0) {
-        return res.status(400).json({ status: res.statusCode, message: 'No body' })
-      }
-      return room
-        ? res.sendStatus(204)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-
+      const room = await Room.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+      if (room) return res.json({ room });
+      return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
       next(error);
@@ -63,13 +57,9 @@ const roomsController = {
   },
   destroy: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const room: IRoom = await delay(
-        roomsData.find((r: IRoom) => r.id === Number(req.params.id)),
-        500);
-
-      return room
-        ? res.sendStatus(204)
-        : res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      const bdResponse = await Room.deleteOne({ _id: req.params.id });
+      if (bdResponse.deletedCount > 0) return res.status(204).json({ status: res.statusCode, message: 'Deleted' });
+      return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
 
     } catch (error) {
       next(error);
