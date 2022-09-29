@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+import config from '../env';
 
 async function mongoConnection() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/miranda_db');
+  await mongoose.connect(config.DB_URI);
   const db = mongoose.connection;
 
   db.on("error", console.error.bind(console, "MongoDB connection error:"));
