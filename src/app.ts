@@ -26,11 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 mongoConnection().catch(err => console.error(err));
 
 app.use('/', indexRouter);
+app.use('/login', loginRouter);
 app.use('/rooms', passport.authenticate('jwt', { session: false }), roomsRouter);
 app.use('/bookings', passport.authenticate('jwt', { session: false }), bookingsRouter);
 app.use('/users', passport.authenticate('jwt', { session: false }), usersRouter);
 app.use('/messages', passport.authenticate('jwt', { session: false }), messagesRouter);
-app.use('/login', loginRouter);
 
 
 // catch 404 and forward to error handler

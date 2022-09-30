@@ -16,6 +16,7 @@ exports.createRandomMessage = exports.createRandomBooking = exports.createRandom
 const faker_1 = require("@faker-js/faker");
 const schemas_1 = require("./schemas");
 const connection_1 = __importDefault(require("./connection"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 exports.USERS = [];
 exports.ROOMS = [];
 exports.BOOKINGS = [];
@@ -24,7 +25,7 @@ function createRandomUser() {
     return {
         fullName: faker_1.faker.name.fullName(),
         email: faker_1.faker.internet.email(),
-        password: faker_1.faker.internet.password(),
+        password: bcrypt_1.default.hashSync(faker_1.faker.internet.password(), 10),
         phone: faker_1.faker.phone.number(),
         startDate: faker_1.faker.date.past(),
         functions: faker_1.faker.lorem.lines(),

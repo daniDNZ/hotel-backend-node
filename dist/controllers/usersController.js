@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const schemas_1 = require("../db/schemas");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const usersController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
@@ -45,6 +49,7 @@ const usersController = {
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const newUser = new schemas_1.User(req.body);
+            newUser.password = bcrypt_1.default.hashSync(newUser.password, 10);
             const user = [yield newUser.save()];
             if (user.length > 0) {
                 return res.json({ user });

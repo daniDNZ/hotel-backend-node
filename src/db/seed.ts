@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Booking, IBooking, IMessage, IRoom, IUser, Message, Room, StatusEnum, User } from './schemas';
 import mongoConnection from './connection';
+import bcrypt from 'bcrypt'
 
 export const USERS: IUser[] = [];
 export const ROOMS: IRoom[] = [];
@@ -11,7 +12,7 @@ export function createRandomUser() {
   return {
     fullName: faker.name.fullName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    password: bcrypt.hashSync(faker.internet.password(), 10),
     phone: faker.phone.number(),
     startDate: faker.date.past(),
     functions: faker.lorem.lines(),

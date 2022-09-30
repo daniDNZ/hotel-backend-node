@@ -19,7 +19,10 @@ const userSchema = new mongoose_1.Schema({
     startDate: Date,
     functions: String,
     status: Boolean,
-    password: String,
+    password: {
+        type: String,
+        required: true
+    },
     photo: String
 });
 const roomSchema = new mongoose_1.Schema({

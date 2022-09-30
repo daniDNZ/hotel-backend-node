@@ -18,7 +18,10 @@ const userSchema = new Schema({
   startDate: Date,
   functions: String,
   status: Boolean,
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   photo: String
 });
 

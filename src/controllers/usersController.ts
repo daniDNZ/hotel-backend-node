@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../db/schemas';
+import bcrypt from 'bcrypt';
 
 const usersController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
@@ -34,6 +35,7 @@ const usersController = {
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = new User(req.body);
+      newUser.password = bcrypt.hashSync(newUser.password, 10);
       const user = [await newUser.save()];
       if (user.length > 0) {
         return res.json({ user });
