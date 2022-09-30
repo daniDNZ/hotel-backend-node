@@ -13,29 +13,30 @@ const schemas_1 = require("../db/schemas");
 const bookingsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Booking.find();
-            query.exec((err, bookings) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+            const bookings = yield schemas_1.Booking.find().exec();
+            if (bookings.length > 0) {
                 return res.json({ bookings });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
-        catch (error) {
-            next(error);
+        catch (err) {
+            next(err);
         }
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Booking.find()
+            const booking = yield schemas_1.Booking.find()
                 .where("_id")
-                .equals(req.params.id);
-            query.exec((err, booking) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+                .equals(req.params.id)
+                .exec();
+            if (booking.length > 0) {
                 return res.json({ booking });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -44,12 +45,13 @@ const bookingsController = {
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const newBooking = new schemas_1.Booking(req.body);
-            newBooking.save((err, booking) => {
-                if (err) {
-                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
-                }
+            const booking = [yield newBooking.save()];
+            if (booking.length > 0) {
                 return res.json({ booking });
-            });
+            }
+            else {
+                return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+            }
         }
         catch (error) {
             next(error);

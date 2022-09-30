@@ -4,30 +4,29 @@ import { User } from '../db/schemas';
 const usersController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = User.find();
-      query.exec((err, users) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      const users = await User.find().exec();
+
+      if (users.length > 0) {
         return res.json({ users });
-      })
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = User.find()
+      const user = await User.find()
         .where("_id")
-        .equals(req.params.id);
+        .equals(req.params.id)
+        .exec();
 
-      query.exec((err, user) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      if (user.length > 0) {
         return res.json({ user });
-      })
-
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
@@ -35,12 +34,13 @@ const usersController = {
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newUser = new User(req.body);
-      newUser.save((err, user) => {
-        if (err) {
-          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
-        }
+      const user = [await newUser.save()];
+      if (user.length > 0) {
         return res.json({ user });
-      });
+      } else {
+        return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+      }
+
     } catch (error) {
       next(error);
     }

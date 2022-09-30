@@ -1,33 +1,33 @@
 import { Request, Response, NextFunction } from 'express';
+import createHttpError from 'http-errors';
 import { Booking } from '../db/schemas';
 
 const bookingsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Booking.find();
-      query.exec((err, bookings) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      const bookings = await Booking.find().exec();
+
+      if (bookings.length > 0) {
         return res.json({ bookings });
-      })
-    } catch (error) {
-      next(error);
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
+    } catch (err) {
+      next(err);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Booking.find()
+      const booking = await Booking.find()
         .where("_id")
-        .equals(req.params.id);
+        .equals(req.params.id)
+        .exec();
 
-      query.exec((err, booking) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      if (booking.length > 0) {
         return res.json({ booking });
-      })
-
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
@@ -35,12 +35,13 @@ const bookingsController = {
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newBooking = new Booking(req.body);
-      newBooking.save((err, booking) => {
-        if (err) {
-          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
-        }
+      const booking = [await newBooking.save()];
+      if (booking.length > 0) {
         return res.json({ booking });
-      });
+      } else {
+        return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+      }
+
     } catch (error) {
       next(error);
     }

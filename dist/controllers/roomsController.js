@@ -13,13 +13,13 @@ const schemas_1 = require("../db/schemas");
 const roomsController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Room.find();
-            query.exec((err, rooms) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+            const rooms = yield schemas_1.Room.find().exec();
+            if (rooms.length > 0) {
                 return res.json({ rooms });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -27,15 +27,16 @@ const roomsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Room.find()
+            const room = yield schemas_1.Room.find()
                 .where("_id")
-                .equals(req.params.id);
-            query.exec((err, room) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+                .equals(req.params.id)
+                .exec();
+            if (room.length > 0) {
                 return res.json({ room });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -44,12 +45,13 @@ const roomsController = {
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const newRoom = new schemas_1.Room(req.body);
-            newRoom.save((err, room) => {
-                if (err) {
-                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
-                }
+            const room = [yield newRoom.save()];
+            if (room.length > 0) {
                 return res.json({ room });
-            });
+            }
+            else {
+                return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+            }
         }
         catch (error) {
             next(error);

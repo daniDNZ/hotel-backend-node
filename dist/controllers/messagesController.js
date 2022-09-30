@@ -13,13 +13,13 @@ const schemas_1 = require("../db/schemas");
 const messagesController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Message.find();
-            query.exec((err, messages) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+            const messages = yield schemas_1.Message.find().exec();
+            if (messages.length > 0) {
                 return res.json({ messages });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -27,15 +27,16 @@ const messagesController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.Message.find()
+            const message = yield schemas_1.Message.find()
                 .where("_id")
-                .equals(req.params.id);
-            query.exec((err, message) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+                .equals(req.params.id)
+                .exec();
+            if (message.length > 0) {
                 return res.json({ message });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -44,12 +45,13 @@ const messagesController = {
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const newMessage = new schemas_1.Message(req.body);
-            newMessage.save((err, message) => {
-                if (err) {
-                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
-                }
+            const message = [yield newMessage.save()];
+            if (message.length > 0) {
                 return res.json({ message });
-            });
+            }
+            else {
+                return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+            }
         }
         catch (error) {
             next(error);

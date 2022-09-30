@@ -13,13 +13,13 @@ const schemas_1 = require("../db/schemas");
 const usersController = {
     index: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.User.find();
-            query.exec((err, users) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+            const users = yield schemas_1.User.find().exec();
+            if (users.length > 0) {
                 return res.json({ users });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -27,15 +27,16 @@ const usersController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const query = schemas_1.User.find()
+            const user = yield schemas_1.User.find()
                 .where("_id")
-                .equals(req.params.id);
-            query.exec((err, user) => {
-                if (err) {
-                    return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-                }
+                .equals(req.params.id)
+                .exec();
+            if (user.length > 0) {
                 return res.json({ user });
-            });
+            }
+            else {
+                return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+            }
         }
         catch (error) {
             next(error);
@@ -44,12 +45,13 @@ const usersController = {
     store: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const newUser = new schemas_1.User(req.body);
-            newUser.save((err, user) => {
-                if (err) {
-                    res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
-                }
+            const user = [yield newUser.save()];
+            if (user.length > 0) {
                 return res.json({ user });
-            });
+            }
+            else {
+                return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+            }
         }
         catch (error) {
             next(error);

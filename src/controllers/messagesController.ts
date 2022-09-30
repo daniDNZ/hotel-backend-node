@@ -1,33 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
-import messageDataJSON from '../data/messages.json';
 import { Message } from '../db/schemas';
 
 const messagesController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Message.find();
-      query.exec((err, messages) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      const messages = await Message.find().exec();
+
+      if (messages.length > 0) {
         return res.json({ messages });
-      })
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Message.find()
+      const message = await Message.find()
         .where("_id")
-        .equals(req.params.id);
+        .equals(req.params.id)
+        .exec();
 
-      query.exec((err, message) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      if (message.length > 0) {
         return res.json({ message });
-      })
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
@@ -35,12 +34,13 @@ const messagesController = {
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newMessage = new Message(req.body);
-      newMessage.save((err, message) => {
-        if (err) {
-          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
-        }
+      const message = [await newMessage.save()];
+      if (message.length > 0) {
         return res.json({ message });
-      });
+      } else {
+        return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+      }
+
     } catch (error) {
       next(error);
     }
@@ -50,7 +50,6 @@ const messagesController = {
       const message = await Message.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
       if (message) return res.json({ message });
       return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-
 
     } catch (error) {
       next(error);

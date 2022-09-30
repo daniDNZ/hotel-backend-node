@@ -4,30 +4,29 @@ import { Room } from '../db/schemas';
 const roomsController = {
   index: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Room.find();
-      query.exec((err, rooms) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      const rooms = await Room.find().exec();
+
+      if (rooms.length > 0) {
         return res.json({ rooms });
-      })
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const query = Room.find()
+      const room = await Room.find()
         .where("_id")
-        .equals(req.params.id);
+        .equals(req.params.id)
+        .exec();
 
-      query.exec((err, room) => {
-        if (err) {
-          return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
-        }
+      if (room.length > 0) {
         return res.json({ room });
-      })
-
+      } else {
+        return res.status(404).json({ status: res.statusCode, message: 'Not Found' });
+      }
     } catch (error) {
       next(error);
     }
@@ -35,12 +34,13 @@ const roomsController = {
   store: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newRoom = new Room(req.body);
-      newRoom.save((err, room) => {
-        if (err) {
-          res.status(400).json({ status: res.statusCode, message: 'Wrong Data' })
-        }
+      const room = [await newRoom.save()];
+      if (room.length > 0) {
         return res.json({ room });
-      });
+      } else {
+        return res.status(400).json({ status: res.statusCode, message: 'Wrong Data' });
+      }
+
     } catch (error) {
       next(error);
     }
