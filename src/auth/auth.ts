@@ -1,13 +1,9 @@
 import passport from 'passport';
 import { Strategy as localStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
-import { IUserData } from '../interfaces/IUser';
+import bcrypt from 'bcrypt';
 import config from '../env';
-
-const userData: IUserData = {
-  email: 'admin@admin.com',
-  password: 'admin'
-};
+import { User } from '../db/schemas';
 
 passport.use(
   'login',
@@ -18,11 +14,11 @@ passport.use(
     },
     async (email: string, password: string, done: Function): Promise<any> => {
       try {
-        if (userData.email !== email || userData.password !== password) {
-          return done(null, false, { message: 'User not found or wrong password' });
+        const userData = await User.findOne({ email: email }).exec();
+        if (userData && bcrypt.compareSync(password, userData.password)) {
+          return done(null, userData, { message: 'Logged in Successfully' });
         }
-
-        return done(null, userData, { message: 'Logged in Successfully' });
+        return done(null, false, { message: 'User not found or wrong password' });
 
       } catch (error) {
         return done(error)

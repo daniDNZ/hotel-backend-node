@@ -15,20 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __importDefault(require("passport"));
 const passport_local_1 = require("passport-local");
 const passport_jwt_1 = require("passport-jwt");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const env_1 = __importDefault(require("../env"));
-const userData = {
-    email: 'admin@admin.com',
-    password: 'admin'
-};
+const schemas_1 = require("../db/schemas");
 passport_1.default.use('login', new passport_local_1.Strategy({
     usernameField: 'email',
     passwordField: 'password'
 }, (email, password, done) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (userData.email !== email || userData.password !== password) {
-            return done(null, false, { message: 'User not found or wrong password' });
+        const userData = yield schemas_1.User.findOne({ email: email }).exec();
+        if (userData && bcrypt_1.default.compareSync(password, userData.password)) {
+            return done(null, userData, { message: 'Logged in Successfully' });
         }
-        return done(null, userData, { message: 'Logged in Successfully' });
+        return done(null, false, { message: 'User not found or wrong password' });
     }
     catch (error) {
         return done(error);
