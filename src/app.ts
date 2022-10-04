@@ -11,6 +11,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import mongoConnection from './db/connection';
 import cors from 'cors';
+import config from './env';
 
 require('./auth/auth');
 
@@ -21,7 +22,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 const corsOptions = {
-  origin: ['localhost:3001', 'https://hoppscotch.io'],
+  origin: config.ORIGINS,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
