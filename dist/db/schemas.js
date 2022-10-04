@@ -3,22 +3,61 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Message = exports.Booking = exports.Room = exports.User = exports.StatusEnum = void 0;
 const mongoose_1 = require("mongoose");
 const messageSchema = new mongoose_1.Schema({
-    date: Date,
-    customer: String,
-    email: String,
-    phone: String,
-    subject: String,
-    comment: String,
-    status: Boolean
+    date: {
+        type: Date,
+        required: true
+    },
+    customer: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    subject: {
+        type: String,
+        required: true
+    },
+    comment: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: Boolean,
+        required: true
+    }
 });
 const userSchema = new mongoose_1.Schema({
-    fullName: String,
-    job: String,
-    email: String,
-    phone: String,
-    startDate: Date,
+    fullName: {
+        type: String,
+        required: true
+    },
+    job: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
+    startDate: {
+        type: Date,
+        required: true
+    },
     functions: String,
-    status: Boolean,
+    status: {
+        type: Boolean,
+        required: true
+    },
     password: {
         type: String,
         required: true
@@ -26,13 +65,28 @@ const userSchema = new mongoose_1.Schema({
     photo: String
 });
 const roomSchema = new mongoose_1.Schema({
-    type: String,
-    number: String,
-    price: Number,
+    type: {
+        type: String,
+        required: true
+    },
+    number: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
     amenities: [String],
     description: String,
-    offer: Boolean,
-    discount: Number,
+    offer: {
+        type: Boolean,
+        required: true
+    },
+    discount: {
+        type: Number,
+        default: 0
+    },
     cancellation: String
 });
 var StatusEnum;
@@ -42,10 +96,22 @@ var StatusEnum;
     StatusEnum["inProgress"] = "inProgress";
 })(StatusEnum = exports.StatusEnum || (exports.StatusEnum = {}));
 const bookingSchema = new mongoose_1.Schema({
-    fullName: String,
-    checkIn: Date,
-    checkOut: Date,
-    orderDate: Date,
+    fullName: {
+        type: String,
+        required: true
+    },
+    checkIn: {
+        type: Date,
+        required: true
+    },
+    checkOut: {
+        type: Date,
+        required: true
+    },
+    orderDate: {
+        type: Date,
+        required: true
+    },
     specialRequest: String,
     status: {
         type: String,
@@ -53,7 +119,10 @@ const bookingSchema = new mongoose_1.Schema({
         default: "checkIn",
         required: true
     },
-    price: Number,
+    price: {
+        type: Number,
+        required: true
+    },
     rooms: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
