@@ -15,11 +15,17 @@ const index_1 = __importDefault(require("./routes/index"));
 const passport_1 = __importDefault(require("passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const connection_1 = __importDefault(require("./db/connection"));
+const cors_1 = __importDefault(require("cors"));
 require('./auth/auth');
 const app = (0, express_1.default)();
 // view engine setup
 app.set('views', path_1.default.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+const corsOptions = {
+    origin: ['localhost:3001', 'https://hoppscotch.io'],
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());

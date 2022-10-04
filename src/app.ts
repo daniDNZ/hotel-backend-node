@@ -10,6 +10,8 @@ import indexRouter from './routes/index';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import mongoConnection from './db/connection';
+import cors from 'cors';
+
 require('./auth/auth');
 
 const app: Express = express();
@@ -17,6 +19,13 @@ const app: Express = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+const corsOptions = {
+  origin: ['localhost:3001', 'https://hoppscotch.io'],
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
