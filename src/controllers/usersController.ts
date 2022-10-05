@@ -18,12 +18,12 @@ const usersController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user = await User.find()
+      const user = await User.findOne()
         .where("_id")
         .equals(req.params.id)
         .exec();
 
-      if (user.length > 0) {
+      if (user) {
         return res.json({ user });
       } else {
         return res.status(404).json({ status: res.statusCode, message: 'Not Found' });

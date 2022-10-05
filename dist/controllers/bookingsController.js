@@ -27,11 +27,11 @@ const bookingsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const booking = yield schemas_1.Booking.find()
+            const booking = yield schemas_1.Booking.findOne()
                 .where("_id")
                 .equals(req.params.id)
                 .exec();
-            if (booking.length > 0) {
+            if (booking) {
                 return res.json({ booking });
             }
             else {

@@ -27,11 +27,11 @@ const messagesController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const message = yield schemas_1.Message.find()
+            const message = yield schemas_1.Message.findOne()
                 .where("_id")
                 .equals(req.params.id)
                 .exec();
-            if (message.length > 0) {
+            if (message) {
                 return res.json({ message });
             }
             else {

@@ -17,12 +17,12 @@ const messagesController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const message = await Message.find()
+      const message = await Message.findOne()
         .where("_id")
         .equals(req.params.id)
         .exec();
 
-      if (message.length > 0) {
+      if (message) {
         return res.json({ message });
       } else {
         return res.status(404).json({ status: res.statusCode, message: 'Not Found' });

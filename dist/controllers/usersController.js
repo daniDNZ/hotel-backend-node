@@ -31,11 +31,11 @@ const usersController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const user = yield schemas_1.User.find()
+            const user = yield schemas_1.User.findOne()
                 .where("_id")
                 .equals(req.params.id)
                 .exec();
-            if (user.length > 0) {
+            if (user) {
                 return res.json({ user });
             }
             else {

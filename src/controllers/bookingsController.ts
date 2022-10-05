@@ -18,12 +18,12 @@ const bookingsController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const booking = await Booking.find()
+      const booking = await Booking.findOne()
         .where("_id")
         .equals(req.params.id)
         .exec();
 
-      if (booking.length > 0) {
+      if (booking) {
         return res.json({ booking });
       } else {
         return res.status(404).json({ status: res.statusCode, message: 'Not Found' });

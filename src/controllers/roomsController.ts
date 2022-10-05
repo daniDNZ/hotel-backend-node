@@ -17,12 +17,12 @@ const roomsController = {
   },
   show: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const room = await Room.find()
+      const room = await Room.findOne()
         .where("_id")
         .equals(req.params.id)
         .exec();
 
-      if (room.length > 0) {
+      if (room) {
         return res.json({ room });
       } else {
         return res.status(404).json({ status: res.statusCode, message: 'Not Found' });

@@ -27,11 +27,11 @@ const roomsController = {
     }),
     show: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const room = yield schemas_1.Room.find()
+            const room = yield schemas_1.Room.findOne()
                 .where("_id")
                 .equals(req.params.id)
                 .exec();
-            if (room.length > 0) {
+            if (room) {
                 return res.json({ room });
             }
             else {
