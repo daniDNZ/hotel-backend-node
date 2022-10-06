@@ -4,7 +4,7 @@ import path from 'path';
 import roomsRouter from './routes/rooms';
 import bookingsRouter from './routes/bookings';
 import usersRouter from './routes/users';
-import messagesRouter from './routes/users';
+import messagesRouter from './routes/messages';
 import loginRouter from './routes/login';
 import indexRouter from './routes/index';
 import passport from 'passport';

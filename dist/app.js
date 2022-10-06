@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 const rooms_1 = __importDefault(require("./routes/rooms"));
 const bookings_1 = __importDefault(require("./routes/bookings"));
 const users_1 = __importDefault(require("./routes/users"));
-const users_2 = __importDefault(require("./routes/users"));
+const messages_1 = __importDefault(require("./routes/messages"));
 const login_1 = __importDefault(require("./routes/login"));
 const index_1 = __importDefault(require("./routes/index"));
 const passport_1 = __importDefault(require("passport"));
@@ -37,7 +37,7 @@ app.use('/login', login_1.default);
 app.use('/rooms', passport_1.default.authenticate('jwt', { session: false }), rooms_1.default);
 app.use('/bookings', passport_1.default.authenticate('jwt', { session: false }), bookings_1.default);
 app.use('/users', passport_1.default.authenticate('jwt', { session: false }), users_1.default);
-app.use('/messages', passport_1.default.authenticate('jwt', { session: false }), users_2.default);
+app.use('/messages', passport_1.default.authenticate('jwt', { session: false }), messages_1.default);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next((0, http_errors_1.default)(404));
